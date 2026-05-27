@@ -477,7 +477,19 @@ textarea.form-input { resize: vertical; min-height: 80px; }
 
 /* ── Responsive ── */
 @media (max-width: 480px) {
-  .login-box { padding: 36px 24px 32px; }
+  /* 로그인 */
+  .login-wrapper { padding: 12px; align-items: flex-start; padding-top: 40px; }
+  .login-box { padding: 40px 24px 36px; }
+  .login-logo .icon { width: 64px; height: 64px; font-size: 32px; border-radius: 16px; }
+  .login-logo h1 { font-size: 26px; }
+  .login-logo p { font-size: 15px; }
+  .form-group label { font-size: 14px; }
+  .form-input { font-size: 16px; padding: 14px 16px; }
+  .pw-wrap .form-input { padding-right: 48px; }
+  .btn-primary { font-size: 17px; padding: 16px 0; border-radius: 12px; }
+  .demo-box { font-size: 13px; line-height: 1.8; }
+
+  /* 기타 */
   .stat-value { font-size: 22px; }
   .attend-stat .value { font-size: 24px; }
   .student-name { font-size: 16px; }
