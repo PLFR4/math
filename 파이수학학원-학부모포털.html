@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>수학학원 - 학부모 포털</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --card: #FFFFFF;
+  --primary: #1B4332;
+  --primary-light: #2D6A4F;
+  --primary-pale: #D8F3DC;
+  --accent: #E07A2F;
+  --accent-pale: #FDE8D0;
+  --text: #1A1A1A;
+  --text-soft: #555555;
+  --text-muted: #999999;
+  --border: #E8E4DD;
+  --present: #2D6A4F;
+  --present-bg: #D8F3DC;
+  --absent: #C0392B;
+  --absent-bg: #FADBD8;
+  --late: #E07A2F;
+  --late-bg: #FDE8D0;
+  --danger: #C0392B;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.hidden { display: none !important; }
+
+/* ── Login ── */
+.login-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, var(--primary) 0%, var(--primary-light) 100%);
+  padding: 20px;
+}
+.login-box {
+  width: 100%; max-width: 400px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 48px 36px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  animation: fadeUp 0.5s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.login-logo {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.login-logo .icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  background: var(--primary-pale);
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.login-logo h1 {
+  font-size: 22px; font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.5px;
+}
+.login-logo p {
+  font-size: 14px; color: var(--text-muted);
+  margin-top: 6px;
+}
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 13px; font-weight: 600;
+  color: var(--text-soft);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fff;
+}
+.form-input:focus { border-color: var(--primary); }
+.form-input::placeholder { color: #bbb; }
+.pw-wrap { position: relative; }
+.pw-wrap .form-input { padding-right: 42px; }
+.pw-toggle {
+  position: absolute; right: 10px; top: 50%;
+  transform: translateY(-50%);
+  background: none; border: none;
+  cursor: pointer; font-size: 16px;
+  color: var(--text-muted); padding: 4px;
+}
+.login-err {
+  font-size: 13px; color: var(--danger);
+  text-align: center; margin-top: 8px;
+  min-height: 18px;
+}
+.btn-primary {
+  width: 100%; padding: 13px 0;
+  border-radius: 10px; border: none;
+  background: var(--primary); color: #fff;
+  font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--primary-light); }
+.demo-box {
+  margin-top: 28px;
+  padding: 14px 16px;
+  background: var(--bg);
+  border-radius: 10px;
+  font-size: 12px; color: var(--text-muted);
+  line-height: 1.7;
+}
+.demo-box strong { color: var(--text-soft); }
+
+/* ── Header ── */
+.app-header {
+  background: var(--primary); color: #fff;
+  padding: 16px 20px;
+  display: flex; align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.app-header .logo { display: flex; align-items: center; gap: 10px; }
+.app-header .logo span:first-child { font-size: 22px; }
+.app-header .logo span:last-child { font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+.header-right { display: flex; align-items: center; gap: 12px; }
+.header-right .user-name { font-size: 13px; opacity: 0.8; }
+.btn-logout {
+  background: rgba(255,255,255,0.15); border: none;
+  color: #fff; padding: 6px 14px;
+  border-radius: 8px; font-size: 13px;
+  cursor: pointer; font-family: inherit;
+}
+
+/* ── Tabs ── */
+.tab-nav {
+  display: flex; background: var(--card);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 56px; z-index: 99;
+}
+.tab-btn {
+  flex: 1; padding: 12px 0;
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: none; cursor: pointer;
+  font-family: inherit; font-size: 14px;
+  font-weight: 500; color: var(--text-muted);
+  display: flex; align-items: center;
+  justify-content: center; gap: 5px;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  font-weight: 700;
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+/* ── Main Content ── */
+.main-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 16px 100px;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 22px 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border);
+}
+.card-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 16px;
+}
+.avatar {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--primary-pale);
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 20px; font-weight: 800;
+  color: var(--primary); flex-shrink: 0;
+}
+.avatar.sm { width: 44px; height: 44px; border-radius: 11px; font-size: 18px; }
+.student-name { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+.student-meta { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.info-cell {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.info-cell .label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.info-cell .value { font-size: 14px; font-weight: 600; }
+
+/* ── Stats ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+.stat-value { font-size: 26px; font-weight: 800; }
+
+.attend-stat {
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-align: center;
+}
+.attend-stat .label { font-size: 11px; font-weight: 600; }
+.attend-stat .value { font-size: 28px; font-weight: 800; margin-top: 4px; }
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+}
+.badge-present { background: var(--present-bg); color: var(--present); }
+.badge-absent { background: var(--absent-bg); color: var(--absent); }
+.badge-late { background: var(--late-bg); color: var(--late); }
+.badge-hw-done { background: var(--present-bg); color: var(--present); font-size: 12px; }
+.badge-hw-not { background: var(--absent-bg); color: var(--absent); font-size: 12px; }
+.badge-hw-exempt { background: var(--bg); color: var(--text-muted); font-size: 12px; }
+
+/* ── Score Bar ── */
+.score-bar-wrap { display: flex; align-items: center; gap: 10px; width: 100%; }
+.score-track {
+  flex: 1; height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+  overflow: hidden;
+}
+.score-fill {
+  height: 100%; border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.score-num { font-size: 14px; font-weight: 700; min-width: 36px; text-align: right; }
+
+/* ── List ── */
+.list-card {
+  background: var(--card);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.list-title {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px; font-weight: 700;
+}
+.list-item {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.list-item:last-child { border-bottom: none; }
+.list-date { font-size: 14px; font-weight: 600; }
+.list-note { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Achievement Card ── */
+.achieve-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.achieve-top {
+  display: flex; justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px; flex-wrap: wrap; gap: 6px;
+}
+.achieve-meta { font-size: 13px; color: var(--text-muted); }
+.achieve-topic { font-size: 15px; font-weight: 700; margin-top: 3px; }
+.achieve-comment {
+  margin-top: 10px; font-size: 13px;
+  color: var(--text-soft); line-height: 1.6;
+  background: var(--bg);
+  padding: 10px 14px; border-radius: 8px;
+}
+
+/* ── Chart ── */
+.chart-section { margin-bottom: 14px; }
+.chart-section h3 { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+
+/* ── Admin ── */
+.student-list-item {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  transition: transform 0.1s;
+}
+.student-list-item:hover { transform: scale(1.01); }
+.student-list-item .arrow { font-size: 18px; color: var(--text-muted); }
+
+.back-btn {
+  background: none; border: none;
+  color: var(--primary); font-size: 14px;
+  font-weight: 600; cursor: pointer;
+  font-family: inherit;
+  padding: 0 0 16px;
+  display: flex; align-items: center; gap: 4px;
+}
+.admin-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.admin-tab {
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  border: 1px solid var(--border);
+  background: var(--card); color: var(--text-soft);
+  transition: all 0.15s;
+}
+.admin-tab.active {
+  background: var(--primary);
+  color: #fff; border-color: var(--primary);
+}
+
+/* ── Form ── */
+.form-card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 24px 20px;
+  border: 1px solid var(--border);
+}
+.form-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 18px; }
+.form-card .form-group { margin-bottom: 16px; }
+textarea.form-input { resize: vertical; min-height: 80px; }
+.status-btns { display: flex; gap: 8px; }
+.status-btn {
+  flex: 1; padding: 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text-soft);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: all 0.15s;
+}
+.status-btn.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.late-minutes-group {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--late-bg);
+  border-radius: 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.late-minutes-group label {
+  font-size: 13px; font-weight: 600;
+  color: var(--late); white-space: nowrap;
+}
+.late-minutes-input {
+  width: 80px; padding: 8px 10px;
+  border-radius: 8px;
+  border: 1.5px solid var(--accent);
+  font-size: 14px; font-weight: 600;
+  font-family: inherit; outline: none;
+  text-align: center; background: #fff;
+}
+.late-minutes-input:focus { border-color: var(--primary); }
+.late-minutes-unit {
+  font-size: 13px; color: var(--late); font-weight: 500;
+}
+
+/* ── Edit Button ── */
+.edit-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.edit-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ── Add Student Button ── */
+.btn-add-student {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.btn-add-student:hover { background: var(--primary-light); }
+
+/* ── Delete Student Button ── */
+.btn-delete-student {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--absent);
+  background: #fff;
+  color: var(--absent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-delete-student:hover { background: var(--absent); color: #fff; }
+
+/* ── Flash ── */
+.flash {
+  position: fixed; top: 70px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--present); color: #fff;
+  padding: 10px 24px; border-radius: 10px;
+  font-size: 14px; font-weight: 600;
+  z-index: 200;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  animation: flashIn 0.3s ease;
+}
+@keyframes flashIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .login-box { padding: 36px 24px 32px; }
+  .stat-value { font-size: 22px; }
+  .attend-stat .value { font-size: 24px; }
+  .student-name { font-size: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ LOGIN SCREEN ═══════════════════ -->
+<div id="loginScreen" class="login-wrapper">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🏫</div>
+      <h1>수학학원</h1>
+      <p>학부모 포털에 로그인하세요</p>
+    </div>
+    <div class="form-group">
+      <label>아이디</label>
+      <input id="loginId" class="form-input" placeholder="아이디를 입력하세요">
+    </div>
+    <div class="form-group">
+      <label>비밀번호</label>
+      <div class="pw-wrap">
+        <input id="loginPw" type="password" class="form-input" placeholder="비밀번호를 입력하세요">
+        <button class="pw-toggle" onclick="togglePw()">👁</button>
+      </div>
+    </div>
+    <div id="loginErr" class="login-err"></div>
+    <button class="btn-primary" style="margin-top:12px" onclick="doLogin()">로그인</button>
+    <div class="demo-box">
+      <strong>데모 계정</strong><br>
+      학부모1: parent1 / 1234 &nbsp;|&nbsp; 학부모2: parent2 / 1234<br>
+      관리자: admin / admin
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PARENT SCREEN ═══════════════════ -->
+<div id="parentScreen" class="hidden">
+  <header class="app-header">
+    <div class="logo"><span>수학학원</span></div>
+    <div class="header-right">
+      <span class="user-name" id="parentNameDisplay"></span>
+      <button class="btn-logout" onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+  <nav class="tab-nav">
+    <button class="tab-btn active" data-tab="home" onclick="switchTab(this)"><span>⌂</span> 홈</button>
+    <button class="tab-btn" data-tab="attendance" onclick="switchTab(this)"><span>📋</span> 출결</button>
+    <button class="tab-btn" data-tab="achievement" onclick="switchTab(this)"><span>📊</span> 성취도</button>
+  </nav>
+  <main class="main-content">
+    <div id="tabHome"></div>
+    <div id="tabAttendance" class="hidden"></div>
+    <div id="tabAchievement" class="hidden"></div>
+  </main>
+</div>
+
+<!-- ═══════════════════ ADMIN SCREEN ═══════════════════ -->
+<div id="adminScreen" class="hidden">
+  <header class="app-header">
+    <div class="logo"><span onclick="navAdminList()" style="cursor:pointer">관리자 모드</span></div>
+    <div class="header-right">
+      <button class="btn-logout" onclick="logout()">로그아웃</button>
+    </div>
+  </header>
+  <main class="main-content" id="adminContent"></main>
+</div>
+
+<div id="flashMsg" class="flash hidden"></div>
+
+<script>
+// ═══════════════════ DATA ═══════════════════
+const USERS = {
+  parent1: { password:'1234', role:'parent', studentId:'s1', parentName:'김영희' },
+  parent2: { password:'1234', role:'parent', studentId:'s2', parentName:'이정수' },
+  admin:   { password:'admin', role:'admin', parentName:'관리자' }
+};
+
+const DB = {
+  s1: {
+    name:'김민준', grade:'중2', class:'심화A반',
+    phone:'010-1234-5678', startDate:'2025-03-02',
+    attendance: [
+      { date:'2026-05-26', status:'present', note:'' },
+      { date:'2026-05-23', status:'present', note:'' },
+      { date:'2026-05-21', status:'late', note:'10분 지각' },
+      { date:'2026-05-19', status:'present', note:'' },
+      { date:'2026-05-16', status:'absent', note:'병결 (독감)' },
+      { date:'2026-05-14', status:'present', note:'' },
+      { date:'2026-05-12', status:'present', note:'' },
+      { date:'2026-05-09', status:'present', note:'' },
+      { date:'2026-05-07', status:'present', note:'' },
+      { date:'2026-05-05', status:'present', note:'' },
+    ],
+    achievements: [
+      { id:1, date:'2026-05-26', topic:'이차방정식의 근의 공식', chapter:'3단원 - 이차방정식', score:92, total:100, homework:'완료', comment:'근의 공식 활용 문제 풀이 우수. 판별식 개념도 잘 이해함.' },
+      { id:2, date:'2026-05-23', topic:'이차방정식의 풀이', chapter:'3단원 - 이차방정식', score:85, total:100, homework:'완료', comment:'인수분해를 이용한 풀이는 능숙. 완전제곱식 변환 연습 필요.' },
+      { id:3, date:'2026-05-21', topic:'인수분해 종합', chapter:'2단원 - 인수분해', score:78, total:100, homework:'미완료', comment:'복잡한 인수분해 문제에서 실수 다소 있음. 복습 권장.' },
+      { id:4, date:'2026-05-19', topic:'인수분해 공식 활용', chapter:'2단원 - 인수분해', score:88, total:100, homework:'완료', comment:'공식 적용 능력 향상됨. 응용 문제도 잘 풀어냄.' },
+      { id:5, date:'2026-05-16', topic:'곱셈공식', chapter:'2단원 - 인수분해', score:0, total:100, homework:'면제', comment:'병결로 수업 불참. 보충 수업 예정.' },
+      { id:6, date:'2026-05-14', topic:'다항식의 곱셈', chapter:'1단원 - 다항식', score:95, total:100, homework:'완료', comment:'다항식 곱셈 완벽 이해. 우수한 성취도.' },
+    ],
+    monthlyTests: [
+      { month:'3월', score:72, avg:65 },
+      { month:'4월', score:80, avg:68 },
+      { month:'5월', score:88, avg:70 },
+    ]
+  },
+  s2: {
+    name:'이서윤', grade:'중3', class:'기본B반',
+    phone:'010-9876-5432', startDate:'2025-09-01',
+    attendance: [
+      { date:'2026-05-26', status:'present', note:'' },
+      { date:'2026-05-23', status:'present', note:'' },
+      { date:'2026-05-21', status:'present', note:'' },
+      { date:'2026-05-19', status:'absent', note:'가정사' },
+      { date:'2026-05-16', status:'present', note:'' },
+      { date:'2026-05-14', status:'present', note:'' },
+      { date:'2026-05-12', status:'present', note:'' },
+      { date:'2026-05-09', status:'late', note:'5분 지각' },
+      { date:'2026-05-07', status:'present', note:'' },
+      { date:'2026-05-05', status:'present', note:'' },
+    ],
+    achievements: [
+      { id:1, date:'2026-05-26', topic:'이차함수의 그래프', chapter:'4단원 - 이차함수', score:75, total:100, homework:'완료', comment:'꼭짓점 좌표 구하기는 이해. 그래프 이동 개념 보충 필요.' },
+      { id:2, date:'2026-05-23', topic:'이차함수 y=ax²', chapter:'4단원 - 이차함수', score:80, total:100, homework:'완료', comment:'기본형 이해 양호. 그래프 그리기 연습 더 하면 좋겠음.' },
+      { id:3, date:'2026-05-21', topic:'이차방정식 활용', chapter:'3단원 - 이차방정식', score:68, total:100, homework:'미완료', comment:'문장제 문제에서 식 세우기 어려워함. 유형별 반복 학습 필요.' },
+    ],
+    monthlyTests: [
+      { month:'3월', score:58, avg:65 },
+      { month:'4월', score:65, avg:68 },
+      { month:'5월', score:73, avg:70 },
+    ]
+  }
+};
+
+let currentUser = null;
+
+// ═══════════════════ UTILITIES ═══════════════════
+function $(id) { return document.getElementById(id); }
+function show(el) { el.classList.remove('hidden'); }
+function hide(el) { el.classList.add('hidden'); }
+
+function flash(msg) {
+  const f = $('flashMsg');
+  f.textContent = '✓ ' + msg;
+  show(f);
+  setTimeout(() => hide(f), 2500);
+}
+
+function badge(status, note) {
+  const map = {
+    present: { label:'출석', cls:'badge-present', icon:'✓' },
+    absent:  { label:'결석', cls:'badge-absent', icon:'✕' },
+    late:    { label: note || '지각', cls:'badge-late', icon:'!' },
+  };
+  const s = map[status] || map.present;
+  return `<span class="badge ${s.cls}"><span style="font-size:11px">${s.icon}</span> ${s.label}</span>`;
+}
+
+function scoreBar(score, total) {
+  const pct = total > 0 ? (score/total)*100 : 0;
+  const color = pct >= 90 ? 'var(--present)' : pct >= 70 ? 'var(--accent)' : 'var(--danger)';
+  return `<div class="score-bar-wrap">
+    <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${color}"></div></div>
+    <span class="score-num" style="color:${color}">${score}</span>
+  </div>`;
+}
+
+function hwBadge(hw) {
+  if (hw === '완료') return '<span class="badge badge-hw-done">숙제 완료</span>';
+  if (hw === '면제') return '<span class="badge badge-hw-exempt">숙제 면제</span>';
+  return '<span class="badge badge-hw-not">숙제 미완료</span>';
+}
+
+function miniChart(data) {
+  if (!data || !data.length) return '';
+  const maxVal = 100;
+  const h = 120, w = 260, pad = 30;
+  const innerW = w - pad*2, innerH = h - pad*1.5;
+  const xStep = data.length > 1 ? innerW/(data.length-1) : 0;
+  const toY = v => pad*0.5 + innerH - (v/maxVal)*innerH;
+
+  let scorePath = data.map((d,i) => `${i===0?'M':'L'}${pad+i*xStep},${toY(d.score)}`).join(' ');
+  let avgPath = data.map((d,i) => `${i===0?'M':'L'}${pad+i*xStep},${toY(d.avg)}`).join(' ');
+  let dots = data.map((d,i) => {
+    const x = pad + i*xStep;
+    return `<circle cx="${x}" cy="${toY(d.score)}" r="4" fill="var(--primary)"/>
+      <circle cx="${x}" cy="${toY(d.avg)}" r="3" fill="var(--text-muted)"/>
+      <text x="${x}" y="${h-2}" text-anchor="middle" font-size="10" fill="var(--text-soft)">${d.month}</text>
+      <text x="${x}" y="${toY(d.score)-8}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">${d.score}</text>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;max-width:280px;height:auto">
+    <line x1="${pad}" y1="${toY(0)}" x2="${w-pad}" y2="${toY(0)}" stroke="var(--border)" stroke-width="1"/>
+    <line x1="${pad}" y1="${toY(50)}" x2="${w-pad}" y2="${toY(50)}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <line x1="${pad}" y1="${toY(100)}" x2="${w-pad}" y2="${toY(100)}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
+    <path d="${avgPath}" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4,4"/>
+    <path d="${scorePath}" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
+    ${dots}
+    <circle cx="${w-pad-50}" cy="8" r="3" fill="var(--primary)"/>
+    <text x="${w-pad-44}" y="11" font-size="9" fill="var(--text-soft)">내 점수</text>
+    <circle cx="${w-pad-50}" cy="20" r="3" fill="var(--text-muted)"/>
+    <text x="${w-pad-44}" y="23" font-size="9" fill="var(--text-muted)">반 평균</text>
+  </svg>`;
+}
+
+// ═══════════════════ LOGIN ═══════════════════
+function togglePw() {
+  const inp = $('loginPw');
+  const btn = inp.parentElement.querySelector('.pw-toggle');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+$('loginPw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+$('loginId').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogin() {
+  const id = $('loginId').value.trim();
+  const pw = $('loginPw').value;
+  const user = USERS[id];
+  if (!user || user.password !== pw) {
+    $('loginErr').textContent = '아이디 또는 비밀번호가 올바르지 않습니다.';
+    return;
+  }
+  currentUser = { id, ...user };
+  hide($('loginScreen'));
+  if (user.role === 'admin') showAdmin();
+  else showParent();
+  pushHistory();
+}
+
+function logout() {
+  currentUser = null;
+  hide($('parentScreen'));
+  hide($('adminScreen'));
+  show($('loginScreen'));
+  $('loginId').value = '';
+  $('loginPw').value = '';
+  $('loginErr').textContent = '';
+  history.replaceState({ screen: 'login', userId: null }, '');
+}
+
+// ═══════════════════ PARENT VIEW ═══════════════════
+function showParent() {
+  show($('parentScreen'));
+  $('parentNameDisplay').textContent = currentUser.parentName + '님';
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.tab-btn[data-tab="home"]').classList.add('active');
+  renderParentHome();
+  show($('tabHome'));
+  hide($('tabAttendance'));
+  hide($('tabAchievement'));
+}
+
+function switchTab(btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const t = btn.dataset.tab;
+  ['tabHome','tabAttendance','tabAchievement'].forEach(id => hide($(id)));
+  if (t === 'home') { renderParentHome(); show($('tabHome')); }
+  if (t === 'attendance') { renderParentAttendance(); show($('tabAttendance')); }
+  if (t === 'achievement') { renderParentAchievement(); show($('tabAchievement')); }
+  pushHistory();
+}
+
+function renderParentHome() {
+  const s = DB[currentUser.studentId];
+  const total = s.attendance.length;
+  const present = s.attendance.filter(a => a.status==='present').length;
+  const rate = total > 0 ? Math.round(present/total*100) : 0;
+  const scores = s.achievements.filter(a => a.score > 0);
+  const avg = scores.length > 0 ? Math.round(scores.reduce((sum,a) => sum+a.score, 0)/scores.length) : 0;
+  const latest = scores[0];
+
+  let html = `
+    <div class="card">
+      <div class="card-header">
+        <div class="avatar">${s.name[0]}</div>
+        <div>
+          <div class="student-name">${s.name}</div>
+          <div class="student-meta">${s.grade} · ${s.class}</div>
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-cell"><div class="label">등원 시작일</div><div class="value">${s.startDate}</div></div>
+        <div class="info-cell"><div class="label">연락처</div><div class="value">${s.phone}</div></div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-label">출석률</div><div class="stat-value" style="color:${rate>=90?'var(--present)':'var(--accent)'}">${rate}%</div></div>
+      <div class="stat-card"><div class="stat-label">평균 점수</div><div class="stat-value" style="color:${avg>=80?'var(--present)':'var(--accent)'}">${avg}</div></div>
+      <div class="stat-card"><div class="stat-label">수업 횟수</div><div class="stat-value" style="color:var(--primary)">${total}</div></div>
+    </div>
+    <div class="card chart-section"><h3>월별 테스트 추이</h3>${miniChart(s.monthlyTests)}</div>`;
+
+  if (latest) {
+    html += `<div class="card">
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">최근 학습 기록</h3>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:4px">${latest.date} · ${latest.chapter}</p>
+      <p style="font-size:15px;font-weight:600;margin-bottom:10px">${latest.topic}</p>
+      ${scoreBar(latest.score, latest.total)}
+      <div class="achieve-comment">💬 ${latest.comment}</div>
+    </div>`;
+  }
+  $('tabHome').innerHTML = html;
+}
+
+function renderParentAttendance() {
+  const s = DB[currentUser.studentId];
+  const cnt = { present:0, late:0, absent:0 };
+  s.attendance.forEach(a => cnt[a.status]++);
+
+  let items = s.attendance.map(a => `
+    <div class="list-item">
+      <div>
+        <div class="list-date">${a.date}</div>
+        ${a.note ? `<div class="list-note">${a.note}</div>` : ''}
+      </div>
+      ${badge(a.status, a.status === 'late' && a.note ? a.note : null)}
+    </div>`).join('');
+
+  $('tabAttendance').innerHTML = `
+    <div class="stats-row">
+      <div class="attend-stat" style="background:var(--present-bg)">
+        <div class="label" style="color:var(--present)">출석</div>
+        <div class="value" style="color:var(--present)">${cnt.present}</div>
+      </div>
+      <div class="attend-stat" style="background:var(--late-bg)">
+        <div class="label" style="color:var(--late)">지각</div>
+        <div class="value" style="color:var(--late)">${cnt.late}</div>
+      </div>
+      <div class="attend-stat" style="background:var(--absent-bg)">
+        <div class="label" style="color:var(--absent)">결석</div>
+        <div class="value" style="color:var(--absent)">${cnt.absent}</div>
+      </div>
+    </div>
+    <div class="list-card">
+      <div class="list-title">출결 기록</div>
+      ${items}
+    </div>`;
+}
+
+function renderParentAchievement() {
+  const s = DB[currentUser.studentId];
+  let cards = s.achievements.map(a => `
+    <div class="achieve-card">
+      <div class="achieve-top">
+        <div>
+          <div class="achieve-meta">${a.date} · ${a.chapter}</div>
+          <div class="achieve-topic">${a.topic}</div>
+        </div>
+        ${hwBadge(a.homework)}
+      </div>
+      ${a.score > 0 ? `<div style="margin:12px 0">${scoreBar(a.score, a.total)}</div>` : ''}
+      <div class="achieve-comment">💬 ${a.comment}</div>
+    </div>`).join('');
+
+  $('tabAchievement').innerHTML = `
+    <div class="card chart-section"><h3>월별 테스트 추이</h3>${miniChart(s.monthlyTests)}</div>
+    ${cards}`;
+}
+
+// ═══════════════════ ADMIN VIEW ═══════════════════
+let adminSelectedStudent = null;
+let adminView = 'list';
+
+function showAdmin() {
+  show($('adminScreen'));
+  adminSelectedStudent = null;
+  renderAdmin();
+}
+
+function renderAdmin() {
+  const c = $('adminContent');
+
+  if (!adminSelectedStudent) {
+    if (adminView === 'addStudent') {
+      c.innerHTML = `
+        <button class="back-btn" onclick="navAdminList()">‹ 학생 목록</button>
+        <div class="form-card">
+          <h3>학생 추가</h3>
+          <div class="form-group">
+            <label>학생 이름</label>
+            <input id="newName" class="form-input" placeholder="예: 홍길동">
+          </div>
+          <div class="form-group">
+            <label>학년</label>
+            <input id="newGrade" class="form-input" placeholder="예: 중1, 중2, 고1">
+          </div>
+          <div class="form-group">
+            <label>반</label>
+            <input id="newClass" class="form-input" placeholder="예: 심화A반, 기본B반">
+          </div>
+          <div class="form-group">
+            <label>학부모 연락처</label>
+            <input id="newPhone" class="form-input" placeholder="010-0000-0000" oninput="formatPhoneInput(this)" maxlength="13" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label>등원 시작일</label>
+            <input id="newStartDate" type="date" class="form-input" value="${new Date().toISOString().slice(0,10)}">
+          </div>
+          <div style="height:1px;background:var(--border);margin:20px 0"></div>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">학부모 로그인 계정 설정</p>
+          <div class="form-group">
+            <label>학부모 이름</label>
+            <input id="newParentName" class="form-input" placeholder="예: 홍부모">
+          </div>
+          <div class="form-group">
+            <label>아이디</label>
+            <input id="newUserId" class="form-input" placeholder="로그인 아이디">
+          </div>
+          <div class="form-group">
+            <label>비밀번호</label>
+            <input id="newUserPw" class="form-input" placeholder="비밀번호">
+          </div>
+          <button class="btn-primary" onclick="saveStudent()">학생 추가</button>
+        </div>`;
+      return;
+    }
+
+    const items = Object.entries(DB).map(([id, s]) => `
+      <div class="student-list-item" onclick="selectStudent('${id}')">
+        <div class="avatar sm">${s.name[0]}</div>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:700">${s.name}</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${s.grade} · ${s.class}</div>
+        </div>
+        <span class="arrow">›</span>
+      </div>`).join('');
+
+    c.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 style="font-size:18px;font-weight:800;letter-spacing:-0.3px">학생 목록</h2>
+        <button class="btn-add-student" onclick="navAdminView('addStudent')">+ 학생 추가</button>
+      </div>
+      ${items}`;
+    return;
+  }
+
+  const s = DB[adminSelectedStudent];
+  const tabClass = k => 'admin-tab' + (adminView === k ? ' active' : '');
+
+  let content = '';
+
+  if (adminView === 'list') {
+    const attRows = s.attendance.map((a, i) => {
+      const exp = expandedAttIndex === i;
+      return `
+        <div class="list-item" style="flex-direction:column;align-items:stretch">
+          <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer" onclick="toggleAttDetail(${i})">
+            <div>
+              <div class="list-date" style="${exp ? 'color:var(--primary)' : ''}">${a.date}</div>
+              ${a.note ? `<div class="list-note">${a.note}</div>` : ''}
+            </div>
+            ${badge(a.status, a.status === 'late' && a.note ? a.note : null)}
+          </div>
+          ${exp ? `
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:${a.note ? '8px' : '12px'}">
+                <span style="font-size:13px;color:var(--text-muted)">출결 상태</span>
+                ${badge(a.status, a.status === 'late' && a.note ? a.note : null)}
+              </div>
+              ${a.note ? `<div style="font-size:13px;color:var(--text-soft);margin-bottom:12px">비고: ${a.note}</div>` : ''}
+              <button class="btn-primary" style="padding:9px 0;font-size:13px" onclick="editAttendance(${i})">수정</button>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+
+    const achRows = s.achievements.map(a => {
+      const exp = expandedAchId === a.id;
+      return `
+        <div class="card" style="padding:16px 20px;margin-bottom:10px${exp ? ';border-color:var(--primary-light)' : ''}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div style="flex:1">
+              <div style="font-size:13px;color:var(--text-muted)">${a.date} · ${a.chapter}</div>
+              <div style="font-size:14px;font-weight:700;margin-top:3px;cursor:pointer;color:${exp ? 'var(--primary)' : 'var(--text)'}" onclick="toggleAchDetail(${a.id})">${a.topic}</div>
+            </div>
+            ${hwBadge(a.homework)}
+          </div>
+          ${exp ? `
+            <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+              ${a.score > 0 ? `<div style="margin-bottom:10px">${scoreBar(a.score, a.total)}</div>` : ''}
+              <div class="achieve-comment" style="margin-bottom:12px">💬 ${a.comment}</div>
+              <button class="btn-primary" style="padding:9px 0;font-size:13px" onclick="editAchievement(${a.id})">수정</button>
+            </div>` : `${a.score > 0 ? `<div style="margin-top:8px">${scoreBar(a.score, a.total)}</div>` : ''}`}
+        </div>`;
+    }).join('');
+
+    content = `
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:10px">출결 기록</h3>
+      <div class="list-card" style="margin-bottom:20px">${attRows || '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:14px">출결 기록이 없습니다</div>'}</div>
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:10px">성취도 기록</h3>
+      ${achRows || '<div style="background:var(--card);border-radius:14px;padding:20px;text-align:center;color:var(--text-muted);font-size:14px;border:1px solid var(--border)">성취도 기록이 없습니다</div>'}`;
+  }
+
+  if (adminView === 'addAttend') {
+    content = `
+      <div class="form-card">
+        <h3>출결 입력</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="attDate" type="date" class="form-input" value="2026-05-27">
+        </div>
+        <div class="form-group">
+          <label>출결 상태</label>
+          <div class="status-btns">
+            <button class="status-btn active" onclick="pickAttStatus(this,'present')">출석</button>
+            <button class="status-btn" onclick="pickAttStatus(this,'late')">지각</button>
+            <button class="status-btn" onclick="pickAttStatus(this,'absent')">결석</button>
+          </div>
+          <div id="lateMinutesWrap" class="late-minutes-group hidden">
+            <label>지각 시간</label>
+            <input id="lateMinutes" type="number" class="late-minutes-input" placeholder="0" min="1" max="120" value="">
+            <span class="late-minutes-unit">분</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>비고</label>
+          <input id="attNote" class="form-input" placeholder="예: 병결, 가정사 등 (지각 외 사유)">
+        </div>
+        <button class="btn-primary" onclick="saveAttendance()">저장</button>
+      </div>`;
+  }
+
+  if (adminView === 'addAchieve') {
+    content = `
+      <div class="form-card">
+        <h3>학습 성취도 입력</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="achDate" type="date" class="form-input" value="2026-05-27">
+        </div>
+        <div class="form-group">
+          <label>단원</label>
+          <input id="achChapter" class="form-input" placeholder="예: 3단원 - 이차방정식">
+        </div>
+        <div class="form-group">
+          <label>학습 주제</label>
+          <input id="achTopic" class="form-input" placeholder="예: 근의 공식 활용">
+        </div>
+        <div class="form-group">
+          <label>점수 (100점 만점)</label>
+          <input id="achScore" type="number" class="form-input" placeholder="0~100" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>숙제</label>
+          <div class="status-btns">
+            <button class="status-btn active" onclick="pickHw(this,'완료')">완료</button>
+            <button class="status-btn" onclick="pickHw(this,'미완료')">미완료</button>
+            <button class="status-btn" onclick="pickHw(this,'면제')">면제</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>선생님 코멘트</label>
+          <textarea id="achComment" class="form-input" placeholder="학습 태도, 보충 필요 부분 등"></textarea>
+        </div>
+        <button class="btn-primary" onclick="saveAchievement()">저장</button>
+      </div>`;
+  }
+
+  if (adminView === 'editAttend') {
+    const a = s.attendance[adminEditIndex];
+    const parsed = parseLate(a.note);
+    content = `
+      <div class="form-card">
+        <h3>출결 수정</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="attDate" type="date" class="form-input" value="${a.date}">
+        </div>
+        <div class="form-group">
+          <label>출결 상태</label>
+          <div class="status-btns">
+            <button class="status-btn${selectedAttStatus==='present'?' active':''}" onclick="pickAttStatus(this,'present')">출석</button>
+            <button class="status-btn${selectedAttStatus==='late'?' active':''}" onclick="pickAttStatus(this,'late')">지각</button>
+            <button class="status-btn${selectedAttStatus==='absent'?' active':''}" onclick="pickAttStatus(this,'absent')">결석</button>
+          </div>
+          <div id="lateMinutesWrap" class="late-minutes-group${selectedAttStatus==='late'?'':' hidden'}">
+            <label>지각 시간</label>
+            <input id="lateMinutes" type="number" class="late-minutes-input" placeholder="0" min="1" max="120" value="${parsed.mins}">
+            <span class="late-minutes-unit">분</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>비고</label>
+          <input id="attNote" class="form-input" value="${parsed.extra}" placeholder="예: 병결, 가정사 등">
+        </div>
+        <button class="btn-primary" onclick="saveEditAttendance()">수정 저장</button>
+      </div>`;
+  }
+
+  if (adminView === 'editAchieve') {
+    const a = s.achievements.find(a => a.id === adminEditId);
+    content = `
+      <div class="form-card">
+        <h3>성취도 수정</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="achDate" type="date" class="form-input" value="${a.date}">
+        </div>
+        <div class="form-group">
+          <label>단원</label>
+          <input id="achChapter" class="form-input" value="${a.chapter}" placeholder="예: 3단원 - 이차방정식">
+        </div>
+        <div class="form-group">
+          <label>학습 주제</label>
+          <input id="achTopic" class="form-input" value="${a.topic}" placeholder="예: 근의 공식 활용">
+        </div>
+        <div class="form-group">
+          <label>점수 (100점 만점)</label>
+          <input id="achScore" type="number" class="form-input" value="${a.score}" placeholder="0~100" min="0" max="100">
+        </div>
+        <div class="form-group">
+          <label>숙제</label>
+          <div class="status-btns">
+            <button class="status-btn${selectedHw==='완료'?' active':''}" onclick="pickHw(this,'완료')">완료</button>
+            <button class="status-btn${selectedHw==='미완료'?' active':''}" onclick="pickHw(this,'미완료')">미완료</button>
+            <button class="status-btn${selectedHw==='면제'?' active':''}" onclick="pickHw(this,'면제')">면제</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>선생님 코멘트</label>
+          <textarea id="achComment" class="form-input" placeholder="학습 태도, 보충 필요 부분 등">${a.comment}</textarea>
+        </div>
+        <button class="btn-primary" onclick="saveEditAchievement()">수정 저장</button>
+      </div>`;
+  }
+
+  c.innerHTML = `
+    <button class="back-btn" onclick="navAdminList()">‹ 학생 목록</button>
+    <div class="card" style="display:flex;align-items:center;gap:14px;padding:18px 20px">
+      <div class="avatar sm">${s.name[0]}</div>
+      <div style="flex:1">
+        <div style="font-size:16px;font-weight:700">${s.name}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${s.grade} · ${s.class}</div>
+      </div>
+      <button class="btn-delete-student" onclick="deleteStudent('${adminSelectedStudent}')">삭제</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="${tabClass('list')}" onclick="navAdminView('list')">기록 보기</button>
+      <button class="${tabClass('addAttend')}" onclick="navAdminView('addAttend')">+ 출결 입력</button>
+      <button class="${tabClass('addAchieve')}" onclick="navAdminView('addAchieve')">+ 성취도 입력</button>
+    </div>
+    ${content}`;
+}
+
+function selectStudent(id) {
+  adminSelectedStudent = id;
+  adminView = 'list';
+  expandedAttIndex = null;
+  expandedAchId = null;
+  renderAdmin();
+  pushHistory();
+}
+
+// ── Attendance form helpers ──
+let selectedAttStatus = 'present';
+let selectedHw = '완료';
+let adminEditIndex = null;
+let adminEditId = null;
+let expandedAttIndex = null;
+let expandedAchId = null;
+
+// ═══════════════════ HISTORY API ═══════════════════
+let _restoringHistory = false;
+
+function getAppState() {
+  const screen = currentUser ? (currentUser.role === 'admin' ? 'admin' : 'parent') : 'login';
+  const parentTab = screen === 'parent'
+    ? (document.querySelector('.tab-btn.active')?.dataset.tab || 'home') : null;
+  return {
+    screen, parentTab,
+    adminSelectedStudent, adminView,
+    adminEditIndex, adminEditId,
+    selectedAttStatus, selectedHw,
+    userId: currentUser ? currentUser.id : null,
+  };
+}
+
+function pushHistory() {
+  if (_restoringHistory) return;
+  history.pushState(getAppState(), '');
+}
+
+function replaceHistory() {
+  if (_restoringHistory) return;
+  history.replaceState(getAppState(), '');
+}
+
+function navAdminList() {
+  adminSelectedStudent = null;
+  adminView = 'list';
+  expandedAttIndex = null;
+  expandedAchId = null;
+  renderAdmin();
+  pushHistory();
+}
+
+function navAdminView(view) {
+  adminView = view;
+  if (view === 'list') { expandedAttIndex = null; expandedAchId = null; }
+  renderAdmin();
+  pushHistory();
+}
+
+window.addEventListener('popstate', function(e) {
+  if (!e.state) return;
+  const st = e.state;
+  if (st.screen !== 'login' && (!currentUser || currentUser.id !== st.userId)) {
+    history.replaceState({ screen: 'login', userId: null }, '');
+    return;
+  }
+  _restoringHistory = true;
+  try {
+    if (st.screen === 'login') {
+      currentUser = null;
+      hide($('parentScreen'));
+      hide($('adminScreen'));
+      show($('loginScreen'));
+      $('loginId').value = '';
+      $('loginPw').value = '';
+      $('loginErr').textContent = '';
+    } else if (st.screen === 'parent') {
+      hide($('adminScreen'));
+      hide($('loginScreen'));
+      show($('parentScreen'));
+      $('parentNameDisplay').textContent = currentUser.parentName + '님';
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const tab = st.parentTab || 'home';
+      const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+      if (btn) btn.classList.add('active');
+      ['tabHome','tabAttendance','tabAchievement'].forEach(id => hide($(id)));
+      if (tab === 'home') { renderParentHome(); show($('tabHome')); }
+      if (tab === 'attendance') { renderParentAttendance(); show($('tabAttendance')); }
+      if (tab === 'achievement') { renderParentAchievement(); show($('tabAchievement')); }
+    } else if (st.screen === 'admin') {
+      adminSelectedStudent = st.adminSelectedStudent;
+      adminView = st.adminView;
+      adminEditIndex = st.adminEditIndex;
+      adminEditId = st.adminEditId;
+      selectedAttStatus = st.selectedAttStatus || 'present';
+      selectedHw = st.selectedHw || '완료';
+      expandedAttIndex = null;
+      expandedAchId = null;
+      hide($('loginScreen'));
+      hide($('parentScreen'));
+      show($('adminScreen'));
+      renderAdmin();
+    }
+  } finally {
+    _restoringHistory = false;
+  }
+});
+
+function toggleAttDetail(i) {
+  expandedAttIndex = expandedAttIndex === i ? null : i;
+  renderAdmin();
+}
+
+function toggleAchDetail(id) {
+  expandedAchId = expandedAchId === id ? null : id;
+  renderAdmin();
+}
+
+function formatPhoneInput(inp) {
+  const digits = inp.value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 3) inp.value = digits;
+  else if (digits.length <= 7) inp.value = digits.slice(0,3) + '-' + digits.slice(3);
+  else inp.value = digits.slice(0,3) + '-' + digits.slice(3,7) + '-' + digits.slice(7);
+}
+
+function parseLate(note) {
+  const m = note.match(/^(\d+)분 지각(?:\s*\/\s*(.*))?$/);
+  if (m) return { mins: m[1], extra: m[2] || '' };
+  const m2 = note.match(/^지각(?:\s*\/\s*(.*))?$/);
+  if (m2) return { mins: '', extra: m2[1] || '' };
+  return { mins: '', extra: note };
+}
+
+function editAttendance(index) {
+  adminEditIndex = index;
+  selectedAttStatus = DB[adminSelectedStudent].attendance[index].status;
+  adminView = 'editAttend';
+  renderAdmin();
+  pushHistory();
+}
+
+function editAchievement(id) {
+  adminEditId = id;
+  const a = DB[adminSelectedStudent].achievements.find(a => a.id === id);
+  selectedHw = a.homework;
+  adminView = 'editAchieve';
+  renderAdmin();
+  pushHistory();
+}
+
+function saveEditAttendance() {
+  const date = $('attDate').value;
+  let note = $('attNote').value.trim();
+  if (selectedAttStatus === 'late') {
+    const mins = $('lateMinutes').value;
+    if (mins && parseInt(mins) > 0) {
+      note = mins + '분 지각' + (note ? ' / ' + note : '');
+    } else {
+      note = '지각' + (note ? ' / ' + note : '');
+    }
+  }
+  DB[adminSelectedStudent].attendance[adminEditIndex] = { date, status: selectedAttStatus, note };
+  flash('출결이 수정되었습니다');
+  selectedAttStatus = 'present';
+  adminEditIndex = null;
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function saveEditAchievement() {
+  const s = DB[adminSelectedStudent];
+  const idx = s.achievements.findIndex(a => a.id === adminEditId);
+  if (idx === -1) return;
+  s.achievements[idx] = {
+    ...s.achievements[idx],
+    date: $('achDate').value,
+    topic: $('achTopic').value,
+    chapter: $('achChapter').value,
+    score: parseInt($('achScore').value) || 0,
+    homework: selectedHw,
+    comment: $('achComment').value,
+  };
+  flash('성취도가 수정되었습니다');
+  selectedHw = '완료';
+  adminEditId = null;
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function pickAttStatus(btn, status) {
+  selectedAttStatus = status;
+  btn.parentElement.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const wrap = $('lateMinutesWrap');
+  if (status === 'late') {
+    show(wrap);
+  } else {
+    hide(wrap);
+    const inp = $('lateMinutes');
+    if (inp) inp.value = '';
+  }
+}
+
+function pickHw(btn, hw) {
+  selectedHw = hw;
+  btn.parentElement.querySelectorAll('.status-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function saveAttendance() {
+  const date = $('attDate').value;
+  let note = $('attNote').value.trim();
+
+  if (selectedAttStatus === 'late') {
+    const mins = $('lateMinutes').value;
+    if (mins && parseInt(mins) > 0) {
+      note = mins + '분 지각' + (note ? ' / ' + note : '');
+    } else {
+      note = '지각' + (note ? ' / ' + note : '');
+    }
+  }
+
+  DB[adminSelectedStudent].attendance.unshift({ date, status: selectedAttStatus, note });
+  flash('출결이 저장되었습니다');
+  selectedAttStatus = 'present';
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function saveAchievement() {
+  const s = DB[adminSelectedStudent];
+  s.achievements.unshift({
+    id: Date.now(),
+    date: $('achDate').value,
+    topic: $('achTopic').value,
+    chapter: $('achChapter').value,
+    score: parseInt($('achScore').value) || 0,
+    total: 100,
+    homework: selectedHw,
+    comment: $('achComment').value,
+  });
+  flash('성취도가 저장되었습니다');
+  selectedHw = '완료';
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function saveStudent() {
+  const name      = $('newName').value.trim();
+  const grade     = $('newGrade').value.trim();
+  const cls       = $('newClass').value.trim();
+  const phone     = $('newPhone').value.trim();
+  const startDate = $('newStartDate').value;
+  const parentName = $('newParentName').value.trim();
+  const userId    = $('newUserId').value.trim();
+  const userPw    = $('newUserPw').value.trim();
+
+  if (!name || !grade || !cls || !phone || !parentName || !userId || !userPw) {
+    alert('모든 항목을 입력해주세요.');
+    return;
+  }
+  if (USERS[userId]) {
+    alert('이미 사용 중인 아이디입니다.');
+    return;
+  }
+
+  const newStudentId = 's' + Date.now();
+  DB[newStudentId] = {
+    name, grade, class: cls,
+    phone, startDate,
+    attendance: [],
+    achievements: [],
+    monthlyTests: []
+  };
+  USERS[userId] = {
+    password: userPw,
+    role: 'parent',
+    studentId: newStudentId,
+    parentName
+  };
+
+  flash(name + ' 학생이 추가되었습니다');
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function deleteStudent(id) {
+  const s = DB[id];
+  if (!confirm(`'${s.name}' 학생을 삭제하시겠습니까?\n\n출결·성취도 기록이 모두 삭제되며 복구할 수 없습니다.`)) return;
+  delete DB[id];
+  Object.keys(USERS).forEach(uid => {
+    if (USERS[uid].studentId === id) delete USERS[uid];
+  });
+  flash(s.name + ' 학생이 삭제되었습니다');
+  navAdminList();
+}
+
+// 페이지 로드 시 초기 히스토리 상태 등록
+history.replaceState({ screen: 'login', userId: null }, '');
+</script>
+</body>
+</html>
