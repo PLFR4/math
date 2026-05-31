@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>수학학원 - 학부모 포털</title>
+<title>수학전문 생각함수 - 학부모 포털</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -102,6 +102,7 @@ body {
   background: #fff;
 }
 .form-input:focus { border-color: var(--primary); }
+select.form-input { cursor: pointer; }
 .form-input::placeholder { color: #bbb; }
 .pw-wrap { position: relative; }
 .pw-wrap .form-input { padding-right: 42px; }
@@ -261,6 +262,7 @@ body {
 .badge-hw-done { background: var(--present-bg); color: var(--present); font-size: 12px; }
 .badge-hw-not { background: var(--absent-bg); color: var(--absent); font-size: 12px; }
 .badge-hw-exempt { background: var(--bg); color: var(--text-muted); font-size: 12px; }
+.badge-hw-partial { background: var(--late-bg); color: var(--late); font-size: 12px; }
 
 /* ── Score Bar ── */
 .score-bar-wrap { display: flex; align-items: center; gap: 10px; width: 100%; }
@@ -503,6 +505,10 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   .btn-primary { font-size: 17px; padding: 18px 0; margin-top: 8px; border-radius: 12px; }
   .demo-box { font-size: 13px; line-height: 1.9; margin-top: 28px; }
 
+  /* 탭 4개 대응 */
+  .tab-btn { font-size: 12px; padding: 10px 0; gap: 3px; }
+  .tab-btn span { font-size: 14px; }
+
   /* 기타 */
   .stat-value { font-size: 22px; }
   .attend-stat .value { font-size: 24px; }
@@ -517,7 +523,7 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   <div class="login-box">
     <div class="login-logo">
       <div class="icon">🏫</div>
-      <h1>수학학원</h1>
+      <h1>수학전문 생각함수</h1>
       <p>학부모 포털에 로그인하세요</p>
     </div>
     <div class="form-group">
@@ -544,7 +550,7 @@ textarea.form-input { resize: vertical; min-height: 80px; }
 <!-- ═══════════════════ PARENT SCREEN ═══════════════════ -->
 <div id="parentScreen" class="hidden">
   <header class="app-header">
-    <div class="logo"><span>수학학원</span></div>
+    <div class="logo"><span>수학전문 생각함수</span></div>
     <div class="header-right">
       <span class="user-name" id="parentNameDisplay"></span>
       <button class="btn-logout" onclick="logout()">로그아웃</button>
@@ -553,12 +559,14 @@ textarea.form-input { resize: vertical; min-height: 80px; }
   <nav class="tab-nav">
     <button class="tab-btn active" data-tab="home" onclick="switchTab(this)"><span>⌂</span> 홈</button>
     <button class="tab-btn" data-tab="attendance" onclick="switchTab(this)"><span>📋</span> 출결</button>
-    <button class="tab-btn" data-tab="achievement" onclick="switchTab(this)"><span>📊</span> 성취도</button>
+    <button class="tab-btn" data-tab="achievement" onclick="switchTab(this)"><span>📝</span> 숙제</button>
+    <button class="tab-btn" data-tab="exam" onclick="switchTab(this)"><span>📊</span> 시험</button>
   </nav>
   <main class="main-content">
     <div id="tabHome"></div>
     <div id="tabAttendance" class="hidden"></div>
     <div id="tabAchievement" class="hidden"></div>
+    <div id="tabExam" class="hidden"></div>
   </main>
 </div>
 
@@ -580,12 +588,30 @@ textarea.form-input { resize: vertical; min-height: 80px; }
 const USERS = {
   parent1: { password:'1234', role:'parent', studentId:'s1', parentName:'김영희' },
   parent2: { password:'1234', role:'parent', studentId:'s2', parentName:'이정수' },
-  admin:   { password:'admin', role:'admin', parentName:'관리자' }
+  admin:   { password:'admin', role:'admin', parentName:'관리자' },
+  parent3:  { password:'1234', role:'parent', studentId:'s3',  parentName:'박민수' },
+  parent4:  { password:'1234', role:'parent', studentId:'s4',  parentName:'최정희' },
+  parent5:  { password:'1234', role:'parent', studentId:'s5',  parentName:'김태호' },
+  parent6:  { password:'1234', role:'parent', studentId:'s6',  parentName:'이상철' },
+  parent7:  { password:'1234', role:'parent', studentId:'s7',  parentName:'정미라' },
+  parent8:  { password:'1234', role:'parent', studentId:'s8',  parentName:'한종원' },
+  parent9:  { password:'1234', role:'parent', studentId:'s9',  parentName:'오현주' },
+  parent10: { password:'1234', role:'parent', studentId:'s10', parentName:'윤재호' },
+  parent11: { password:'1234', role:'parent', studentId:'s11', parentName:'강미선' },
+  parent12: { password:'1234', role:'parent', studentId:'s12', parentName:'임동훈' },
+  parent13: { password:'1234', role:'parent', studentId:'s13', parentName:'송혜진' },
+  parent14: { password:'1234', role:'parent', studentId:'s14', parentName:'배종식' },
+  parent15: { password:'1234', role:'parent', studentId:'s15', parentName:'문정아' },
+  parent16: { password:'1234', role:'parent', studentId:'s16', parentName:'류성훈' },
+  parent17: { password:'1234', role:'parent', studentId:'s17', parentName:'신미영' },
+  parent18: { password:'1234', role:'parent', studentId:'s18', parentName:'전영호' },
+  parent19: { password:'1234', role:'parent', studentId:'s19', parentName:'장순희' },
+  parent20: { password:'1234', role:'parent', studentId:'s20', parentName:'고재민' }
 };
 
 const DB = {
   s1: {
-    name:'김민준', grade:'중2', class:'심화A반',
+    name:'김민준', grade:'중2', class:'심화A반', school:'흥덕중',
     phone:'010-1234-5678', startDate:'2025-03-02',
     attendance: [
       { date:'2026-05-26', status:'present', note:'' },
@@ -614,7 +640,7 @@ const DB = {
     ]
   },
   s2: {
-    name:'이서윤', grade:'중3', class:'기본B반',
+    name:'이서윤', grade:'중3', class:'기본B반', school:'위례중',
     phone:'010-9876-5432', startDate:'2025-09-01',
     attendance: [
       { date:'2026-05-26', status:'present', note:'' },
@@ -638,8 +664,30 @@ const DB = {
       { month:'4월', score:65, avg:68 },
       { month:'5월', score:73, avg:70 },
     ]
-  }
+  },
+  s3:  { name:'박서준', grade:'중1', class:'중1', school:'청담중', phone:'010-2211-3344', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s4:  { name:'최유나', grade:'중1', class:'중1', school:'흥덕중', phone:'010-3322-4455', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s5:  { name:'김도현', grade:'중1', class:'중1', school:'신구중', phone:'010-4433-5566', startDate:'2025-04-01', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s6:  { name:'이지호', grade:'중2', class:'중2', school:'위례중', phone:'010-5544-6677', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s7:  { name:'정수아', grade:'중2', class:'중2', school:'청담중', phone:'010-6655-7788', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s8:  { name:'한민준', grade:'중2', class:'중2', school:'신구중', phone:'010-7766-8899', startDate:'2025-05-01', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s9:  { name:'오하은', grade:'중3', class:'중3', school:'흥덕중', phone:'010-8877-9900', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s10: { name:'윤준혁', grade:'중3', class:'중3', school:'청담중', phone:'010-9988-1122', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s11: { name:'강소연', grade:'중3', class:'중3', school:'신구중', phone:'010-1122-3344', startDate:'2025-04-15', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s12: { name:'임재원', grade:'고1', class:'고1', school:'흥덕고', phone:'010-2233-4455', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s13: { name:'송지우', grade:'고1', class:'고1', school:'영동고', phone:'010-3344-5566', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s14: { name:'배성민', grade:'고1', class:'고1', school:'청담고', phone:'010-4455-6677', startDate:'2025-05-01', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s15: { name:'문채원', grade:'고2', class:'고2', school:'위례고', phone:'010-5566-7788', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s16: { name:'류준서', grade:'고2', class:'고2', school:'영동고', phone:'010-6677-8899', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s17: { name:'신아영', grade:'고2', class:'고2', school:'흥덕고', phone:'010-7788-9900', startDate:'2025-04-01', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s18: { name:'전민서', grade:'고3', class:'고3', school:'청담고', phone:'010-8899-1122', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s19: { name:'장효진', grade:'고3', class:'고3', school:'위례고', phone:'010-9900-2233', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] },
+  s20: { name:'고승우', grade:'고3', class:'고3', school:'영동고', phone:'010-1122-4455', startDate:'2025-03-02', attendance:[], achievements:[], monthlyTests:[], exams:[] }
 };
+
+const GRADE_EXAMS = {};
+
+let SCHOOLS = ['흥덕중', '위례중', '청담중', '신구중', '흥덕고', '영동고', '청담고', '위례고'];
 
 let currentUser = null;
 
@@ -647,6 +695,73 @@ let currentUser = null;
 function $(id) { return document.getElementById(id); }
 function show(el) { el.classList.remove('hidden'); }
 function hide(el) { el.classList.add('hidden'); }
+
+function getStudentSchool(s) {
+  if (s.school) return s.school;
+  return s.grade.startsWith('중') ? '흥덕중학교' : '흥덕고등학교';
+}
+
+function calcNaesin(score, total, school, correction) {
+  if (score == null || !correction || !correction[school]) return null;
+  const { a, b } = correction[school];
+  return Math.max(0, Math.min(100, Math.round(score / total * 100 * a + b)));
+}
+
+function correctionInputsHTML(existing, grade) {
+  let filtered;
+  if (grade) {
+    const inGrade = new Set(Object.values(DB).filter(s => s.grade === grade).map(s => getStudentSchool(s)));
+    filtered = SCHOOLS.filter(s => inGrade.has(s));
+  } else {
+    filtered = SCHOOLS;
+  }
+  if (!filtered.length) return '';
+  return `
+    <div class="form-group" style="margin-top:8px">
+      <label>학교별 내신 보정식</label>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:4px;margin-bottom:10px">내신예상점수 = 원점수% × 배율 + 보정값</p>
+      ${filtered.map(school => {
+        const i = SCHOOLS.indexOf(school);
+        const curr = existing && existing[school];
+        const a = curr != null ? curr.a : 1;
+        const b = curr != null ? curr.b : 0;
+        return `
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+            <span style="font-size:13px;font-weight:600;flex:1;min-width:80px">${school}</span>
+            <input type="number" id="corr_a_${i}" class="form-input" style="width:68px;text-align:center" value="${a}" step="0.01" min="0" placeholder="배율">
+            <span style="font-size:12px;color:var(--text-muted);white-space:nowrap">× % +</span>
+            <input type="number" id="corr_b_${i}" class="form-input" style="width:60px;text-align:center" value="${b}" placeholder="보정">
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function collectCorrection() {
+  const correction = {};
+  SCHOOLS.forEach((school, i) => {
+    const aEl = document.getElementById('corr_a_' + i);
+    const bEl = document.getElementById('corr_b_' + i);
+    if (aEl && bEl) correction[school] = { a: parseFloat(aEl.value) || 1, b: parseFloat(bEl.value) || 0 };
+  });
+  return correction;
+}
+
+function promptAddSchool() {
+  const name = prompt('추가할 학교 이름을 입력하세요:');
+  if (!name || !name.trim()) return;
+  const n = name.trim();
+  if (SCHOOLS.includes(n)) { alert('이미 등록된 학교입니다.'); return; }
+  SCHOOLS.push(n);
+  renderAdmin();
+}
+
+function removeSchool(name) {
+  const inUse = Object.values(DB).some(s => getStudentSchool(s) === name);
+  if (inUse) { alert('이 학교에 재학 중인 학생이 있어 삭제할 수 없습니다.'); return; }
+  if (!confirm(`'${name}'을(를) 삭제하시겠습니까?`)) return;
+  SCHOOLS = SCHOOLS.filter(s => s !== name);
+  renderAdmin();
+}
 
 function flash(msg) {
   const f = $('flashMsg');
@@ -674,7 +789,19 @@ function scoreBar(score, total) {
   </div>`;
 }
 
+function wrongBadge(wrong, fixed) {
+  if (!wrong) return '';
+  const color = fixed >= wrong ? 'var(--present)' : fixed > 0 ? 'var(--accent)' : 'var(--danger)';
+  const bg = fixed >= wrong ? 'var(--present-bg)' : fixed > 0 ? 'var(--late-bg)' : 'var(--absent-bg)';
+  return `<span class="badge" style="background:${bg};color:${color};font-size:12px">오답 ${wrong}개 중 ${fixed}개 수정</span>`;
+}
+
 function hwBadge(hw) {
+  if (typeof hw === 'number') {
+    if (hw === 100) return '<span class="badge badge-hw-done">숙제 완료</span>';
+    if (hw === 0) return '<span class="badge badge-hw-not">미완료</span>';
+    return `<span class="badge badge-hw-partial">${hw}% 완료</span>`;
+  }
   if (hw === '완료') return '<span class="badge badge-hw-done">숙제 완료</span>';
   if (hw === '면제') return '<span class="badge badge-hw-exempt">숙제 면제</span>';
   return '<span class="badge badge-hw-not">숙제 미완료</span>';
@@ -688,12 +815,13 @@ function miniChart(data) {
   const xStep = data.length > 1 ? innerW/(data.length-1) : 0;
   const toY = v => pad*0.5 + innerH - (v/maxVal)*innerH;
 
+  const hasAvg = data.some(d => d.avg != null);
   let scorePath = data.map((d,i) => `${i===0?'M':'L'}${pad+i*xStep},${toY(d.score)}`).join(' ');
-  let avgPath = data.map((d,i) => `${i===0?'M':'L'}${pad+i*xStep},${toY(d.avg)}`).join(' ');
+  let avgPath = hasAvg ? data.map((d,i) => `${i===0?'M':'L'}${pad+i*xStep},${toY(d.avg||0)}`).join(' ') : '';
   let dots = data.map((d,i) => {
     const x = pad + i*xStep;
     return `<circle cx="${x}" cy="${toY(d.score)}" r="4" fill="var(--primary)"/>
-      <circle cx="${x}" cy="${toY(d.avg)}" r="3" fill="var(--text-muted)"/>
+      ${hasAvg ? `<circle cx="${x}" cy="${toY(d.avg||0)}" r="3" fill="var(--text-muted)"/>` : ''}
       <text x="${x}" y="${h-2}" text-anchor="middle" font-size="10" fill="var(--text-soft)">${d.month}</text>
       <text x="${x}" y="${toY(d.score)-8}" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">${d.score}</text>`;
   }).join('');
@@ -702,13 +830,12 @@ function miniChart(data) {
     <line x1="${pad}" y1="${toY(0)}" x2="${w-pad}" y2="${toY(0)}" stroke="var(--border)" stroke-width="1"/>
     <line x1="${pad}" y1="${toY(50)}" x2="${w-pad}" y2="${toY(50)}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
     <line x1="${pad}" y1="${toY(100)}" x2="${w-pad}" y2="${toY(100)}" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
-    <path d="${avgPath}" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4,4"/>
+    ${hasAvg ? `<path d="${avgPath}" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="4,4"/>` : ''}
     <path d="${scorePath}" fill="none" stroke="var(--primary)" stroke-width="2.5"/>
     ${dots}
     <circle cx="${w-pad-50}" cy="8" r="3" fill="var(--primary)"/>
-    <text x="${w-pad-44}" y="11" font-size="9" fill="var(--text-soft)">내 점수</text>
-    <circle cx="${w-pad-50}" cy="20" r="3" fill="var(--text-muted)"/>
-    <text x="${w-pad-44}" y="23" font-size="9" fill="var(--text-muted)">반 평균</text>
+    <text x="${w-pad-44}" y="11" font-size="9" fill="var(--text-soft)">점수</text>
+    ${hasAvg ? `<circle cx="${w-pad-50}" cy="20" r="3" fill="var(--text-muted)"/><text x="${w-pad-44}" y="23" font-size="9" fill="var(--text-muted)">반 평균</text>` : ''}
   </svg>`;
 }
 
@@ -759,16 +886,18 @@ function showParent() {
   show($('tabHome'));
   hide($('tabAttendance'));
   hide($('tabAchievement'));
+  hide($('tabExam'));
 }
 
 function switchTab(btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const t = btn.dataset.tab;
-  ['tabHome','tabAttendance','tabAchievement'].forEach(id => hide($(id)));
+  ['tabHome','tabAttendance','tabAchievement','tabExam'].forEach(id => hide($(id)));
   if (t === 'home') { renderParentHome(); show($('tabHome')); }
   if (t === 'attendance') { renderParentAttendance(); show($('tabAttendance')); }
   if (t === 'achievement') { renderParentAchievement(); show($('tabAchievement')); }
+  if (t === 'exam') { renderParentExam(); show($('tabExam')); }
   pushHistory();
 }
 
@@ -777,9 +906,10 @@ function renderParentHome() {
   const total = s.attendance.length;
   const present = s.attendance.filter(a => a.status==='present').length;
   const rate = total > 0 ? Math.round(present/total*100) : 0;
-  const scores = s.achievements.filter(a => a.score > 0);
-  const avg = scores.length > 0 ? Math.round(scores.reduce((sum,a) => sum+a.score, 0)/scores.length) : 0;
-  const latest = scores[0];
+  const sid = currentUser.studentId;
+  const gradeExamList = Object.values(GRADE_EXAMS).filter(e => e.grade === s.grade && e.scores[sid] != null);
+  const avg = gradeExamList.length > 0 ? Math.round(gradeExamList.reduce((sum,e) => sum + Math.round(e.scores[sid]/e.total*100), 0)/gradeExamList.length) : 0;
+  const latest = s.achievements[0] || null;
 
   let html = `
     <div class="card">
@@ -787,7 +917,7 @@ function renderParentHome() {
         <div class="avatar">${s.name[0]}</div>
         <div>
           <div class="student-name">${s.name}</div>
-          <div class="student-meta">${s.grade} · ${s.class}</div>
+          <div class="student-meta">${s.grade}</div>
         </div>
       </div>
       <div class="info-grid">
@@ -797,7 +927,7 @@ function renderParentHome() {
     </div>
     <div class="stats-row">
       <div class="stat-card"><div class="stat-label">출석률</div><div class="stat-value" style="color:${rate>=90?'var(--present)':'var(--accent)'}">${rate}%</div></div>
-      <div class="stat-card"><div class="stat-label">평균 점수</div><div class="stat-value" style="color:${avg>=80?'var(--present)':'var(--accent)'}">${avg}</div></div>
+      <div class="stat-card"><div class="stat-label">시험 평균</div><div class="stat-value" style="color:${avg>=80?'var(--present)':avg>0?'var(--accent)':'var(--text-muted)'}">${avg > 0 ? avg + '%' : '--'}</div></div>
       <div class="stat-card"><div class="stat-label">수업 횟수</div><div class="stat-value" style="color:var(--primary)">${total}</div></div>
     </div>
     <div class="card chart-section"><h3>월별 테스트 추이</h3>${miniChart(s.monthlyTests)}</div>`;
@@ -807,8 +937,8 @@ function renderParentHome() {
       <h3 style="font-size:15px;font-weight:700;margin-bottom:14px">최근 학습 기록</h3>
       <p style="font-size:13px;color:var(--text-muted);margin-bottom:4px">${latest.date} · ${latest.chapter}</p>
       <p style="font-size:15px;font-weight:600;margin-bottom:10px">${latest.topic}</p>
-      ${scoreBar(latest.score, latest.total)}
-      <div class="achieve-comment">💬 ${latest.comment}</div>
+      ${hwBadge(latest.homework)}
+      <div class="achieve-comment" style="margin-top:10px">💬 ${latest.comment}</div>
     </div>`;
   }
   $('tabHome').innerHTML = html;
@@ -860,7 +990,7 @@ function renderParentAchievement() {
         </div>
         ${hwBadge(a.homework)}
       </div>
-      ${a.score > 0 ? `<div style="margin:12px 0">${scoreBar(a.score, a.total)}</div>` : ''}
+      ${a.wrongCount ? `<div style="margin:8px 0">${wrongBadge(a.wrongCount, a.fixedCount || 0)}</div>` : ''}
       <div class="achieve-comment">💬 ${a.comment}</div>
     </div>`).join('');
 
@@ -894,11 +1024,22 @@ function renderAdmin() {
           </div>
           <div class="form-group">
             <label>학년</label>
-            <input id="newGrade" class="form-input" placeholder="예: 중1, 중2, 고1">
+            <select id="newGrade" class="form-input">
+              <option value="">학년 선택</option>
+              <option value="중1">중1</option>
+              <option value="중2">중2</option>
+              <option value="중3">중3</option>
+              <option value="고1">고1</option>
+              <option value="고2">고2</option>
+              <option value="고3">고3</option>
+            </select>
           </div>
           <div class="form-group">
-            <label>반</label>
-            <input id="newClass" class="form-input" placeholder="예: 심화A반, 기본B반">
+            <label>학교</label>
+            <select id="newStudentSchool" class="form-input">
+              <option value="">학교 선택</option>
+              ${SCHOOLS.map(s => `<option value="${s}">${s}</option>`).join('')}
+            </select>
           </div>
           <div class="form-group">
             <label>학부모 연락처</label>
@@ -927,17 +1068,58 @@ function renderAdmin() {
       return;
     }
 
-    const items = Object.entries(DB).map(([id, s]) => `
-      <div class="student-list-item" onclick="selectStudent('${id}')">
-        <div class="avatar sm">${s.name[0]}</div>
-        <div style="flex:1">
-          <div style="font-size:15px;font-weight:700">${s.name}</div>
-          <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${s.grade} · ${s.class}</div>
-        </div>
-        <span class="arrow">›</span>
-      </div>`).join('');
+    if (adminSection === 'exams') {
+      renderAdminExams();
+      return;
+    }
+
+    const gradeOrder = ['중1','중2','중3','고1','고2','고3'];
+    const byGrade = {};
+    gradeOrder.forEach(g => byGrade[g] = []);
+    Object.entries(DB).forEach(([id, s]) => { if (byGrade[s.grade]) byGrade[s.grade].push([id, s]); });
+    gradeOrder.forEach(g => byGrade[g].sort(([,a],[,b]) => a.name.localeCompare(b.name, 'ko')));
+
+    const items = gradeOrder.map(grade => {
+      const sts = byGrade[grade];
+      const rows = sts.length
+        ? sts.map(([id, s]) => `
+          <div class="student-list-item" onclick="selectStudent('${id}')">
+            <div class="avatar sm">${s.name[0]}</div>
+            <div style="flex:1">
+              <div style="font-size:15px;font-weight:700">${s.name}</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">${getStudentSchool(s)}</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>`).join('')
+        : `<div style="padding:12px 4px;font-size:13px;color:var(--text-muted)">학생 없음</div>`;
+      return `
+        <div style="margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 6px;background:var(--card-bg);border-left:4px solid var(--primary);border-radius:0 8px 8px 0;margin-bottom:8px">
+            <span style="font-size:14px;font-weight:800;color:var(--primary)">${grade}</span>
+            <span style="font-size:12px;color:var(--text-muted)">${sts.length}명</span>
+          </div>
+          ${rows}
+        </div>`;
+    }).join('');
+
+    const schoolChips = SCHOOLS.map(name =>
+      `<span style="display:inline-flex;align-items:center;gap:4px;background:var(--primary-pale);color:var(--primary);font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px">
+        ${name}
+        <button onclick="removeSchool('${name}')" style="background:none;border:none;cursor:pointer;color:var(--primary);font-size:13px;line-height:1;padding:0 2px">×</button>
+      </span>`).join('');
 
     c.innerHTML = `
+      <div style="display:flex;gap:8px;margin-bottom:20px">
+        <button class="admin-tab active" onclick="navAdminSection('students')">학생 관리</button>
+        <button class="admin-tab" onclick="navAdminSection('exams')">시험 관리</button>
+      </div>
+      <div class="card" style="padding:14px 16px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:700">등록된 학교</span>
+          <button class="btn-add-student" style="font-size:12px;padding:5px 12px" onclick="promptAddSchool()">+ 학교 추가</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">${schoolChips}</div>
+      </div>
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
         <h2 style="font-size:18px;font-weight:800;letter-spacing:-0.3px">학생 목록</h2>
         <button class="btn-add-student" onclick="navAdminView('addStudent')">+ 학생 추가</button>
@@ -988,18 +1170,54 @@ function renderAdmin() {
           </div>
           ${exp ? `
             <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-              ${a.score > 0 ? `<div style="margin-bottom:10px">${scoreBar(a.score, a.total)}</div>` : ''}
+              ${a.wrongCount ? `<div style="margin-bottom:10px">${wrongBadge(a.wrongCount, a.fixedCount || 0)}</div>` : ''}
               <div class="achieve-comment" style="margin-bottom:12px">💬 ${a.comment}</div>
               <button class="btn-primary" style="padding:9px 0;font-size:13px" onclick="editAchievement(${a.id})">수정</button>
-            </div>` : `${a.score > 0 ? `<div style="margin-top:8px">${scoreBar(a.score, a.total)}</div>` : ''}`}
+            </div>` : ''}
         </div>`;
     }).join('');
+
+    const examRows = Object.values(GRADE_EXAMS)
+      .filter(e => e.grade === s.grade && (e.scores[adminSelectedStudent] != null || (e.absent && e.absent[adminSelectedStudent])))
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .map(e => {
+        const isAbsent = e.absent && e.absent[adminSelectedStudent];
+        if (isAbsent) {
+          return `
+            <div class="card" style="padding:16px 20px;margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="flex:1">
+                  <div style="font-size:13px;color:var(--text-muted)">${e.date} · ${e.grade}</div>
+                  <div style="font-size:14px;font-weight:700;margin-top:3px">${e.name}</div>
+                  ${e.scope ? `<div style="font-size:12px;color:var(--text-muted);margin-top:2px">${e.scope}</div>` : ''}
+                </div>
+                <span class="badge badge-absent">결석</span>
+              </div>
+            </div>`;
+        }
+        const score = e.scores[adminSelectedStudent];
+        const pct = Math.round(score / e.total * 100);
+        const color = pct >= 90 ? 'var(--present)' : pct >= 70 ? 'var(--accent)' : 'var(--danger)';
+        return `
+          <div class="card" style="padding:16px 20px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div style="flex:1">
+                <div style="font-size:13px;color:var(--text-muted)">${e.date} · ${e.grade}</div>
+                <div style="font-size:14px;font-weight:700;margin-top:3px">${e.name}</div>
+                ${e.scope ? `<div style="font-size:12px;color:var(--text-muted);margin-top:2px">${e.scope}</div>` : ''}
+              </div>
+              <span style="font-size:14px;font-weight:700;color:${color}">${score}/${e.total}</span>
+            </div>
+          </div>`;
+      }).join('');
 
     content = `
       <h3 style="font-size:15px;font-weight:700;margin-bottom:10px">출결 기록</h3>
       <div class="list-card" style="margin-bottom:20px">${attRows || '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:14px">출결 기록이 없습니다</div>'}</div>
-      <h3 style="font-size:15px;font-weight:700;margin-bottom:10px">성취도 기록</h3>
-      ${achRows || '<div style="background:var(--card);border-radius:14px;padding:20px;text-align:center;color:var(--text-muted);font-size:14px;border:1px solid var(--border)">성취도 기록이 없습니다</div>'}`;
+      <h3 style="font-size:15px;font-weight:700;margin-bottom:10px">숙제 기록</h3>
+      ${achRows || '<div style="background:var(--card);border-radius:14px;padding:20px;text-align:center;color:var(--text-muted);font-size:14px;border:1px solid var(--border)">숙제 기록이 없습니다</div>'}
+      <h3 style="font-size:15px;font-weight:700;margin:20px 0 10px">시험 기록</h3>
+      ${examRows || '<div style="background:var(--card);border-radius:14px;padding:20px;text-align:center;color:var(--text-muted);font-size:14px;border:1px solid var(--border)">시험 기록이 없습니다</div>'}`;
   }
 
   if (adminView === 'addAttend') {
@@ -1034,7 +1252,7 @@ function renderAdmin() {
   if (adminView === 'addAchieve') {
     content = `
       <div class="form-card">
-        <h3>학습 성취도 입력</h3>
+        <h3>숙제 기록 입력</h3>
         <div class="form-group">
           <label>날짜</label>
           <input id="achDate" type="date" class="form-input" value="2026-05-27">
@@ -1048,15 +1266,20 @@ function renderAdmin() {
           <input id="achTopic" class="form-input" placeholder="예: 근의 공식 활용">
         </div>
         <div class="form-group">
-          <label>점수 (100점 만점)</label>
-          <input id="achScore" type="number" class="form-input" placeholder="0~100" min="0" max="100">
+          <label>숙제 완료율</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" id="achHw" min="0" max="100" value="100" class="form-input" style="width:110px" placeholder="0~100">
+            <span style="font-size:15px;font-weight:600;color:var(--text-soft)">%</span>
+          </div>
         </div>
         <div class="form-group">
-          <label>숙제</label>
-          <div class="status-btns">
-            <button class="status-btn active" onclick="pickHw(this,'완료')">완료</button>
-            <button class="status-btn" onclick="pickHw(this,'미완료')">미완료</button>
-            <button class="status-btn" onclick="pickHw(this,'면제')">면제</button>
+          <label>오답 수정 <span style="font-size:12px;font-weight:400;color:var(--text-muted)">(없으면 0)</span></label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">오답</span>
+            <input type="number" id="achWrong" min="0" value="0" class="form-input" style="width:80px" placeholder="0">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">개 중</span>
+            <input type="number" id="achFixed" min="0" value="0" class="form-input" style="width:80px" placeholder="0">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">개 수정</span>
           </div>
         </div>
         <div class="form-group">
@@ -1100,9 +1323,10 @@ function renderAdmin() {
 
   if (adminView === 'editAchieve') {
     const a = s.achievements.find(a => a.id === adminEditId);
+    const hwVal = typeof a.homework === 'number' ? a.homework : (a.homework === '완료' || a.homework === '면제' ? 100 : 0);
     content = `
       <div class="form-card">
-        <h3>성취도 수정</h3>
+        <h3>숙제 기록 수정</h3>
         <div class="form-group">
           <label>날짜</label>
           <input id="achDate" type="date" class="form-input" value="${a.date}">
@@ -1116,15 +1340,20 @@ function renderAdmin() {
           <input id="achTopic" class="form-input" value="${a.topic}" placeholder="예: 근의 공식 활용">
         </div>
         <div class="form-group">
-          <label>점수 (100점 만점)</label>
-          <input id="achScore" type="number" class="form-input" value="${a.score}" placeholder="0~100" min="0" max="100">
+          <label>숙제 완료율</label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="number" id="achHw" min="0" max="100" value="${hwVal}" class="form-input" style="width:110px" placeholder="0~100">
+            <span style="font-size:15px;font-weight:600;color:var(--text-soft)">%</span>
+          </div>
         </div>
         <div class="form-group">
-          <label>숙제</label>
-          <div class="status-btns">
-            <button class="status-btn${selectedHw==='완료'?' active':''}" onclick="pickHw(this,'완료')">완료</button>
-            <button class="status-btn${selectedHw==='미완료'?' active':''}" onclick="pickHw(this,'미완료')">미완료</button>
-            <button class="status-btn${selectedHw==='면제'?' active':''}" onclick="pickHw(this,'면제')">면제</button>
+          <label>오답 수정 <span style="font-size:12px;font-weight:400;color:var(--text-muted)">(없으면 0)</span></label>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">오답</span>
+            <input type="number" id="achWrong" min="0" value="${a.wrongCount || 0}" class="form-input" style="width:80px" placeholder="0">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">개 중</span>
+            <input type="number" id="achFixed" min="0" value="${a.fixedCount || 0}" class="form-input" style="width:80px" placeholder="0">
+            <span style="font-size:14px;color:var(--text-soft);white-space:nowrap">개 수정</span>
           </div>
         </div>
         <div class="form-group">
@@ -1141,14 +1370,14 @@ function renderAdmin() {
       <div class="avatar sm">${s.name[0]}</div>
       <div style="flex:1">
         <div style="font-size:16px;font-weight:700">${s.name}</div>
-        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${s.grade} · ${s.class}</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${s.grade}</div>
       </div>
       <button class="btn-delete-student" onclick="deleteStudent('${adminSelectedStudent}')">삭제</button>
     </div>
     <div class="admin-tabs">
       <button class="${tabClass('list')}" onclick="navAdminView('list')">기록 보기</button>
       <button class="${tabClass('addAttend')}" onclick="navAdminView('addAttend')">+ 출결 입력</button>
-      <button class="${tabClass('addAchieve')}" onclick="navAdminView('addAchieve')">+ 성취도 입력</button>
+      <button class="${tabClass('addAchieve')}" onclick="navAdminView('addAchieve')">+ 숙제 입력</button>
     </div>
     ${content}`;
 }
@@ -1158,6 +1387,7 @@ function selectStudent(id) {
   adminView = 'list';
   expandedAttIndex = null;
   expandedAchId = null;
+  expandedExamId = null;
   renderAdmin();
   pushHistory();
 }
@@ -1167,8 +1397,13 @@ let selectedAttStatus = 'present';
 let selectedHw = '완료';
 let adminEditIndex = null;
 let adminEditId = null;
+let adminEditExamId = null;
 let expandedAttIndex = null;
 let expandedAchId = null;
+let expandedExamId = null;
+let adminSection = 'students';
+let adminExamView = 'list';
+let adminExamEditId = null;
 
 // ═══════════════════ HISTORY API ═══════════════════
 let _restoringHistory = false;
@@ -1179,7 +1414,8 @@ function getAppState() {
     ? (document.querySelector('.tab-btn.active')?.dataset.tab || 'home') : null;
   return {
     screen, parentTab,
-    adminSelectedStudent, adminView,
+    adminSelectedStudent, adminView, adminSection,
+    adminExamView, adminExamEditId,
     adminEditIndex, adminEditId,
     selectedAttStatus, selectedHw,
     userId: currentUser ? currentUser.id : null,
@@ -1199,15 +1435,17 @@ function replaceHistory() {
 function navAdminList() {
   adminSelectedStudent = null;
   adminView = 'list';
+  adminSection = 'students';
   expandedAttIndex = null;
   expandedAchId = null;
+  expandedExamId = null;
   renderAdmin();
   pushHistory();
 }
 
 function navAdminView(view) {
   adminView = view;
-  if (view === 'list') { expandedAttIndex = null; expandedAchId = null; }
+  if (view === 'list') { expandedAttIndex = null; expandedAchId = null; expandedExamId = null; }
   renderAdmin();
   pushHistory();
 }
@@ -1238,19 +1476,24 @@ window.addEventListener('popstate', function(e) {
       const tab = st.parentTab || 'home';
       const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
       if (btn) btn.classList.add('active');
-      ['tabHome','tabAttendance','tabAchievement'].forEach(id => hide($(id)));
+      ['tabHome','tabAttendance','tabAchievement','tabExam'].forEach(id => hide($(id)));
       if (tab === 'home') { renderParentHome(); show($('tabHome')); }
       if (tab === 'attendance') { renderParentAttendance(); show($('tabAttendance')); }
       if (tab === 'achievement') { renderParentAchievement(); show($('tabAchievement')); }
+      if (tab === 'exam') { renderParentExam(); show($('tabExam')); }
     } else if (st.screen === 'admin') {
       adminSelectedStudent = st.adminSelectedStudent;
       adminView = st.adminView;
+      adminSection = st.adminSection || 'students';
+      adminExamView = st.adminExamView || 'list';
+      adminExamEditId = st.adminExamEditId || null;
       adminEditIndex = st.adminEditIndex;
       adminEditId = st.adminEditId;
       selectedAttStatus = st.selectedAttStatus || 'present';
       selectedHw = st.selectedHw || '완료';
       expandedAttIndex = null;
       expandedAchId = null;
+      expandedExamId = null;
       hide($('loginScreen'));
       hide($('parentScreen'));
       show($('adminScreen'));
@@ -1296,8 +1539,6 @@ function editAttendance(index) {
 
 function editAchievement(id) {
   adminEditId = id;
-  const a = DB[adminSelectedStudent].achievements.find(a => a.id === id);
-  selectedHw = a.homework;
   adminView = 'editAchieve';
   renderAdmin();
   pushHistory();
@@ -1332,12 +1573,12 @@ function saveEditAchievement() {
     date: $('achDate').value,
     topic: $('achTopic').value,
     chapter: $('achChapter').value,
-    score: parseInt($('achScore').value) || 0,
-    homework: selectedHw,
+    homework: parseInt($('achHw').value) || 0,
+    wrongCount: parseInt($('achWrong').value) || 0,
+    fixedCount: parseInt($('achFixed').value) || 0,
     comment: $('achComment').value,
   };
-  flash('성취도가 수정되었습니다');
-  selectedHw = '완료';
+  flash('숙제 기록이 수정되었습니다');
   adminEditId = null;
   adminView = 'list';
   renderAdmin();
@@ -1393,13 +1634,12 @@ function saveAchievement() {
     date: $('achDate').value,
     topic: $('achTopic').value,
     chapter: $('achChapter').value,
-    score: parseInt($('achScore').value) || 0,
-    total: 100,
-    homework: selectedHw,
+    homework: parseInt($('achHw').value) || 0,
+    wrongCount: parseInt($('achWrong').value) || 0,
+    fixedCount: parseInt($('achFixed').value) || 0,
     comment: $('achComment').value,
   });
-  flash('성취도가 저장되었습니다');
-  selectedHw = '완료';
+  flash('숙제 기록이 저장되었습니다');
   adminView = 'list';
   renderAdmin();
   replaceHistory();
@@ -1408,14 +1648,13 @@ function saveAchievement() {
 function saveStudent() {
   const name      = $('newName').value.trim();
   const grade     = $('newGrade').value.trim();
-  const cls       = $('newClass').value.trim();
   const phone     = $('newPhone').value.trim();
   const startDate = $('newStartDate').value;
   const parentName = $('newParentName').value.trim();
   const userId    = $('newUserId').value.trim();
   const userPw    = $('newUserPw').value.trim();
 
-  if (!name || !grade || !cls || !phone || !parentName || !userId || !userPw) {
+  if (!name || !grade || !phone || !parentName || !userId || !userPw) {
     alert('모든 항목을 입력해주세요.');
     return;
   }
@@ -1424,13 +1663,15 @@ function saveStudent() {
     return;
   }
 
+  const school = $('newStudentSchool').value;
   const newStudentId = 's' + Date.now();
   DB[newStudentId] = {
-    name, grade, class: cls,
+    name, grade, class: grade, school,
     phone, startDate,
     attendance: [],
     achievements: [],
-    monthlyTests: []
+    monthlyTests: [],
+    exams: []
   };
   USERS[userId] = {
     password: userPw,
@@ -1445,6 +1686,116 @@ function saveStudent() {
   replaceHistory();
 }
 
+function toggleExamDetail(id) {
+  expandedExamId = expandedExamId === id ? null : id;
+  renderAdmin();
+}
+
+function editExam(id) {
+  adminEditExamId = id;
+  adminView = 'editExam';
+  renderAdmin();
+  pushHistory();
+}
+
+function saveExam() {
+  const s = DB[adminSelectedStudent];
+  if (!s.exams) s.exams = [];
+  const name = $('examName').value.trim();
+  if (!name) { alert('시험명을 입력해주세요.'); return; }
+  s.exams.unshift({
+    id: Date.now(),
+    date: $('examDate').value,
+    name,
+    scope: $('examScope').value.trim(),
+    score: parseInt($('examScore').value) || 0,
+    total: parseInt($('examTotal').value) || 100,
+    comment: $('examComment').value.trim(),
+  });
+  flash('시험 기록이 저장되었습니다');
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function saveEditExam() {
+  const s = DB[adminSelectedStudent];
+  const idx = (s.exams || []).findIndex(e => e.id === adminEditExamId);
+  if (idx === -1) return;
+  s.exams[idx] = {
+    ...s.exams[idx],
+    date: $('examDate').value,
+    name: $('examName').value.trim(),
+    scope: $('examScope').value.trim(),
+    score: parseInt($('examScore').value) || 0,
+    total: parseInt($('examTotal').value) || 100,
+    comment: $('examComment').value.trim(),
+  };
+  flash('시험 기록이 수정되었습니다');
+  adminEditExamId = null;
+  adminView = 'list';
+  renderAdmin();
+  replaceHistory();
+}
+
+function renderParentExam() {
+  const s = DB[currentUser.studentId];
+  const sid = currentUser.studentId;
+  const exams = Object.values(GRADE_EXAMS)
+    .filter(e => e.grade === s.grade && (e.scores[sid] != null || (e.absent && e.absent[sid])))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (!exams.length) {
+    $('tabExam').innerHTML = `<div class="card" style="text-align:center;padding:40px 20px;color:var(--text-muted)">아직 시험 기록이 없습니다</div>`;
+    return;
+  }
+
+  const chartData = exams
+    .filter(e => e.scores[sid] != null)
+    .map(e => ({
+      month: e.date.slice(5).replace('-', '/'),
+      score: Math.round(e.scores[sid] / e.total * 100),
+    }));
+
+  const cards = [...exams].reverse().map(e => {
+    const isAbsent = e.absent && e.absent[sid];
+    if (isAbsent) {
+      return `
+        <div class="achieve-card">
+          <div class="achieve-top">
+            <div>
+              <div class="achieve-meta">${e.date}${e.scope ? ' · ' + e.scope : ''}</div>
+              <div class="achieve-topic">${e.name}</div>
+            </div>
+            <span class="badge badge-absent" style="font-size:13px">결석</span>
+          </div>
+        </div>`;
+    }
+    const score = e.scores[sid];
+    const pct = Math.round(score / e.total * 100);
+    const color = pct >= 90 ? 'var(--present)' : pct >= 70 ? 'var(--accent)' : 'var(--danger)';
+    const naesin = calcNaesin(score, e.total, getStudentSchool(s), e.correction);
+    return `
+      <div class="achieve-card">
+        <div class="achieve-top">
+          <div>
+            <div class="achieve-meta">${e.date}${e.scope ? ' · ' + e.scope : ''}</div>
+            <div class="achieve-topic">${e.name}</div>
+          </div>
+          <div style="text-align:right">
+            <span style="font-size:20px;font-weight:800;color:${color}">${score}<span style="font-size:13px;font-weight:500;color:var(--text-muted)">/${e.total}</span></span>
+            ${naesin != null ? `<div style="font-size:12px;color:var(--primary);font-weight:700;margin-top:2px">내신 예상 ${naesin}점</div>` : ''}
+          </div>
+        </div>
+        <div style="margin:12px 0">${scoreBar(score, e.total)}</div>
+      </div>`;
+  }).join('');
+
+  $('tabExam').innerHTML = `
+    <div class="card chart-section"><h3>시험 점수 추이</h3>${miniChart(chartData)}</div>
+    ${cards}`;
+}
+
 function deleteStudent(id) {
   const s = DB[id];
   if (!confirm(`'${s.name}' 학생을 삭제하시겠습니까?\n\n출결·성취도 기록이 모두 삭제되며 복구할 수 없습니다.`)) return;
@@ -1454,6 +1805,297 @@ function deleteStudent(id) {
   });
   flash(s.name + ' 학생이 삭제되었습니다');
   navAdminList();
+}
+
+// ═══════════════════ EXAM MANAGEMENT ═══════════════════
+function navAdminSection(section) {
+  adminSection = section;
+  adminSelectedStudent = null;
+  adminView = 'list';
+  adminExamView = 'list';
+  adminExamEditId = null;
+  expandedAttIndex = null; expandedAchId = null; expandedExamId = null;
+  renderAdmin();
+  pushHistory();
+}
+
+function navExamView(view) {
+  adminExamView = view;
+  adminExamEditId = null;
+  renderAdminExams();
+  pushHistory();
+}
+
+function editGradeExam(id) {
+  adminExamEditId = id;
+  adminExamView = 'editExam';
+  renderAdminExams();
+  pushHistory();
+}
+
+function renderExamStudentInputs() {
+  const grade = document.getElementById('examGrade').value;
+  const container = document.getElementById('examStudentInputs');
+  const corrContainer = document.getElementById('examCorrectionInputs');
+  if (!grade) {
+    container.innerHTML = '';
+    if (corrContainer) corrContainer.innerHTML = '';
+    return;
+  }
+  const students = Object.entries(DB).filter(([id, s]) => s.grade === grade);
+  if (!students.length) {
+    container.innerHTML = `<div style="padding:12px 0;color:var(--text-muted);font-size:14px">${grade} 학생이 없습니다</div>`;
+    return;
+  }
+  const total = document.getElementById('examTotal')?.value || 100;
+  container.innerHTML = `
+    <div class="form-group">
+      <label>학생별 점수</label>
+      ${students.map(([id, s]) => `
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="flex:1;font-size:14px;font-weight:600">${s.name}</span>
+          <label style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--absent);cursor:pointer;white-space:nowrap;flex-shrink:0">
+            <input type="checkbox" id="absent_${id}" onchange="toggleExamAbsent('${id}')"> 결석
+          </label>
+          <input type="number" id="score_${id}" class="form-input" style="width:80px;text-align:center" min="0" placeholder="점수">
+          <span style="font-size:13px;color:var(--text-muted);white-space:nowrap">/ ${total}</span>
+        </div>`).join('')}
+    </div>`;
+  if (corrContainer) corrContainer.innerHTML = correctionInputsHTML(null, grade);
+}
+
+function toggleExamAbsent(id) {
+  const cb = document.getElementById('absent_' + id);
+  const inp = document.getElementById('score_' + id);
+  if (!inp) return;
+  if (cb.checked) {
+    inp.disabled = true;
+    inp.value = '';
+    inp.style.opacity = '0.3';
+  } else {
+    inp.disabled = false;
+    inp.style.opacity = '1';
+  }
+}
+
+function saveGradeExam() {
+  const name = $('examName').value.trim();
+  const grade = $('examGrade').value;
+  if (!name) { alert('시험명을 입력해주세요.'); return; }
+  if (!grade) { alert('학년을 선택해주세요.'); return; }
+  const total = parseInt($('examTotal').value) || 100;
+  const scores = {}, absent = {};
+  Object.entries(DB).filter(([id, s]) => s.grade === grade).forEach(([id]) => {
+    const absentCb = document.getElementById('absent_' + id);
+    if (absentCb?.checked) { absent[id] = true; return; }
+    const inp = document.getElementById('score_' + id);
+    if (inp && inp.value !== '') scores[id] = parseInt(inp.value) || 0;
+  });
+  const id = Date.now();
+  GRADE_EXAMS[id] = { id, date: $('examDate').value, name,
+    scope: $('examScope').value.trim(), grade, total, scores, absent,
+    correction: collectCorrection() };
+  flash('시험이 저장되었습니다');
+  adminExamView = 'list';
+  renderAdminExams();
+  replaceHistory();
+}
+
+function saveEditGradeExam() {
+  const e = GRADE_EXAMS[adminExamEditId];
+  const total = parseInt($('examTotal').value) || 100;
+  const scores = {}, absent = {};
+  Object.entries(DB).filter(([id, s]) => s.grade === e.grade).forEach(([id]) => {
+    const absentCb = document.getElementById('absent_' + id);
+    if (absentCb?.checked) { absent[id] = true; return; }
+    const inp = document.getElementById('score_' + id);
+    if (inp && inp.value !== '') scores[id] = parseInt(inp.value) || 0;
+  });
+  GRADE_EXAMS[adminExamEditId] = { ...e, date: $('examDate').value,
+    name: $('examName').value.trim(), scope: $('examScope').value.trim(), total, scores, absent,
+    correction: collectCorrection() };
+  flash('시험이 수정되었습니다');
+  adminExamEditId = null;
+  adminExamView = 'list';
+  renderAdminExams();
+  replaceHistory();
+}
+
+function deleteGradeExam(id) {
+  const e = GRADE_EXAMS[id];
+  if (!confirm(`'${e.name}' 시험을 삭제하시겠습니까?`)) return;
+  delete GRADE_EXAMS[id];
+  flash('시험이 삭제되었습니다');
+  adminExamView = 'list';
+  renderAdminExams();
+  replaceHistory();
+}
+
+function renderAdminExams() {
+  const c = $('adminContent');
+  const sectionTabs = `
+    <div style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="admin-tab" onclick="navAdminSection('students')">학생 관리</button>
+      <button class="admin-tab active" onclick="navAdminSection('exams')">시험 관리</button>
+    </div>`;
+
+  if (adminExamView === 'list') {
+    const gradeOrder = ['중1','중2','중3','고1','고2','고3'];
+    const examsByGrade = {};
+    gradeOrder.forEach(g => examsByGrade[g] = []);
+    Object.values(GRADE_EXAMS).forEach(e => { if (examsByGrade[e.grade]) examsByGrade[e.grade].push(e); });
+    gradeOrder.forEach(g => examsByGrade[g].sort((a,b) => b.date.localeCompare(a.date)));
+
+    const examSections = gradeOrder.map(grade => {
+      const exams = examsByGrade[grade];
+      const examCards = exams.length ? exams.map(e => {
+        const students = Object.entries(DB).filter(([id, s]) => s.grade === e.grade);
+        const scored = students.filter(([id]) => e.scores[id] != null && !(e.absent && e.absent[id]));
+        const absentCount = students.filter(([id]) => e.absent && e.absent[id]).length;
+        const avgPct = scored.length > 0
+          ? Math.round(scored.reduce((sum, [id]) => sum + Math.round(e.scores[id]/e.total*100), 0) / scored.length) : null;
+        return `
+          <div class="card" style="padding:16px 20px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+              <div>
+                <div style="font-size:13px;color:var(--text-muted)">${e.date}</div>
+                <div style="font-size:15px;font-weight:700;margin-top:3px">${e.name}</div>
+                ${e.scope ? `<div style="font-size:12px;color:var(--text-muted);margin-top:2px">범위: ${e.scope}</div>` : ''}
+              </div>
+              <div style="text-align:right;flex-shrink:0;margin-left:12px">
+                <div style="font-size:12px;color:var(--text-muted)">${scored.length}명 응시${absentCount ? ' · <span style="color:var(--absent)">'+absentCount+'명 결석</span>' : ''}</div>
+                ${avgPct != null ? `<div style="font-size:14px;font-weight:700;color:var(--primary)">평균 ${avgPct}%</div>` : ''}
+              </div>
+            </div>
+            ${students.map(([id, s]) => {
+              const isAbsent = e.absent && e.absent[id];
+              const score = e.scores[id];
+              const pct = score != null ? Math.round(score/e.total*100) : null;
+              const color = isAbsent ? 'var(--absent)' : (pct != null ? (pct>=90?'var(--present)':pct>=70?'var(--accent)':'var(--danger)') : 'var(--text-muted)');
+              const display = isAbsent ? '결석' : (score != null ? score+'/'+e.total : '미입력');
+              const naesin = isAbsent ? null : calcNaesin(score, e.total, getStudentSchool(s), e.correction);
+              return `<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-top:1px solid var(--border)">
+                <span style="font-size:14px;font-weight:600">${s.name}</span>
+                <div style="text-align:right">
+                  <div style="font-size:14px;font-weight:700;color:${color}">${display}</div>
+                  ${naesin != null ? `<div style="font-size:11px;color:var(--text-muted)">내신 예상 ${naesin}점</div>` : ''}
+                </div>
+              </div>`;
+            }).join('')}
+            <button class="btn-primary" style="margin-top:12px;padding:9px 0;font-size:13px" onclick="editGradeExam(${e.id})">수정</button>
+          </div>`;
+      }).join('') : `<div style="padding:12px 4px;font-size:13px;color:var(--text-muted)">등록된 시험 없음</div>`;
+
+      return `
+        <div style="margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:8px;padding:7px 6px;background:var(--card-bg);border-left:4px solid var(--primary);border-radius:0 8px 8px 0;margin-bottom:10px">
+            <span style="font-size:14px;font-weight:800;color:var(--primary)">${grade}</span>
+            <span style="font-size:12px;color:var(--text-muted)">${exams.length}개</span>
+          </div>
+          ${examCards}
+        </div>`;
+    }).join('');
+
+    c.innerHTML = sectionTabs + `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 style="font-size:18px;font-weight:800;letter-spacing:-0.3px">시험 관리</h2>
+        <button class="btn-add-student" onclick="navExamView('addExam')">+ 시험 추가</button>
+      </div>
+      ${examSections}`;
+    return;
+  }
+
+  if (adminExamView === 'addExam') {
+    const today = new Date().toISOString().slice(0,10);
+    c.innerHTML = sectionTabs + `
+      <div class="form-card">
+        <h3>시험 추가</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="examDate" type="date" class="form-input" value="${today}">
+        </div>
+        <div class="form-group">
+          <label>시험명</label>
+          <input id="examName" class="form-input" placeholder="예: 5월 3주차 시험">
+        </div>
+        <div class="form-group">
+          <label>시험 범위</label>
+          <input id="examScope" class="form-input" placeholder="예: 2단원 - 인수분해">
+        </div>
+        <div class="form-group">
+          <label>만점</label>
+          <input id="examTotal" type="number" class="form-input" value="100" min="1">
+        </div>
+        <div class="form-group">
+          <label>학년</label>
+          <select id="examGrade" class="form-input" onchange="renderExamStudentInputs()">
+            <option value="">학년 선택</option>
+            <option value="중1">중1</option>
+            <option value="중2">중2</option>
+            <option value="중3">중3</option>
+            <option value="고1">고1</option>
+            <option value="고2">고2</option>
+            <option value="고3">고3</option>
+          </select>
+        </div>
+        <div id="examStudentInputs"></div>
+        <div id="examCorrectionInputs"></div>
+        <button class="btn-primary" style="margin-top:16px" onclick="saveGradeExam()">저장</button>
+      </div>`;
+    return;
+  }
+
+  if (adminExamView === 'editExam') {
+    const e = GRADE_EXAMS[adminExamEditId];
+    if (!e) { adminExamView = 'list'; renderAdminExams(); return; }
+    const students = Object.entries(DB).filter(([id, s]) => s.grade === e.grade);
+    c.innerHTML = sectionTabs + `
+      <div class="form-card">
+        <h3>시험 수정</h3>
+        <div class="form-group">
+          <label>날짜</label>
+          <input id="examDate" type="date" class="form-input" value="${e.date}">
+        </div>
+        <div class="form-group">
+          <label>시험명</label>
+          <input id="examName" class="form-input" value="${e.name}">
+        </div>
+        <div class="form-group">
+          <label>시험 범위</label>
+          <input id="examScope" class="form-input" value="${e.scope || ''}">
+        </div>
+        <div class="form-group">
+          <label>만점</label>
+          <input id="examTotal" type="number" class="form-input" value="${e.total}" min="1">
+        </div>
+        <div class="form-group">
+          <label>학년</label>
+          <div style="padding:12px 14px;background:var(--bg);border-radius:10px;font-size:15px;font-weight:600">${e.grade}</div>
+        </div>
+        <div class="form-group">
+          <label>학생별 점수</label>
+          ${students.map(([id, s]) => {
+            const isAbsent = e.absent && e.absent[id];
+            return `
+            <div style="display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border)">
+              <span style="flex:1;font-size:14px;font-weight:600">${s.name}</span>
+              <label style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--absent);cursor:pointer;white-space:nowrap;flex-shrink:0">
+                <input type="checkbox" id="absent_${id}" ${isAbsent ? 'checked' : ''} onchange="toggleExamAbsent('${id}')"> 결석
+              </label>
+              <input type="number" id="score_${id}" class="form-input" style="width:80px;text-align:center${isAbsent ? ';opacity:0.3' : ''}"
+                value="${e.scores[id] != null ? e.scores[id] : ''}" min="0" max="${e.total}" placeholder="점수" ${isAbsent ? 'disabled' : ''}>
+              <span style="font-size:13px;color:var(--text-muted);white-space:nowrap">/ ${e.total}</span>
+            </div>`;
+          }).join('')}
+        </div>
+        ${correctionInputsHTML(e.correction || null, e.grade)}
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn-primary" style="flex:1" onclick="saveEditGradeExam()">수정 저장</button>
+          <button class="btn-delete-student" onclick="deleteGradeExam(${e.id})">삭제</button>
+        </div>
+      </div>`;
+    return;
+  }
 }
 
 // 페이지 로드 시 초기 히스토리 상태 등록
